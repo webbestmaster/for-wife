@@ -1,0 +1,14 @@
+{
+  "frames": {
+    "bg": {
+      "frame": {"x":0, "y":0, "w":518, "h":396},
+      "spriteSourceSize": {"x":0,"y":0,"w":518,"h":396},
+      "sourceSize": {"w":518,"h":396}
+    }
+  },
+  "meta": {
+    "image": "bg.jpg",
+    "size": {"w": 519, "h": 397},
+    "scale": "1"
+  }
+}
