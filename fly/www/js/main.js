@@ -38,14 +38,19 @@ define(function (require) {
 				renderer: 'core/renderer',
 				rendererKeys: 'core/renderer-keys',
 
+			// objects/helpers
+			DisplayObject: 'core/DisplayObject',
+
 			// view's core
 			View: 'view/_core/View',
 			Layer: 'view/_core/Layer',
 
 			// other views
 			TownView: 'view/town/TownView',
-			townViewKeys: 'view/town/town-view-keys',
-			TownLayer: 'view/town/layer/TownLayer'
+				// TownView's objects
+				townViewKeys: 'view/town/town-view-keys',
+				TownLayer: 'view/town/layer/TownLayer',
+				HeartLayer: 'view/town/layer/HeartLayer'
 
 
 

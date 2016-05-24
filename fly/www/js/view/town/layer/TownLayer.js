@@ -1,5 +1,5 @@
 /*global define, window*/
-define(['Layer', 'util', 'device'], function (Layer, util, device) {
+define(['Layer', 'util', 'device', 'DisplayObject'], function (Layer, util, device, DisplayObject) {
 
 	"use strict";
 
@@ -37,7 +37,7 @@ define(['Layer', 'util', 'device'], function (Layer, util, device) {
 				stage = layer.get('stage'),
 				sprite = new win.PIXI.Sprite.fromFrame('bg');
 
-			layer.set('sprite-bg', sprite);
+			layer.set('do-bg', new DisplayObject(sprite));
 			stage.addChild(sprite);
 
 		},
@@ -48,7 +48,7 @@ define(['Layer', 'util', 'device'], function (Layer, util, device) {
 				stage = layer.get('stage'),
 				sprite = new win.PIXI.Sprite.fromFrame('town');
 
-			layer.set('sprite-town', sprite);
+			layer.set('do-town', new DisplayObject(sprite));
 			stage.addChild(sprite);
 
 		},
@@ -58,20 +58,15 @@ define(['Layer', 'util', 'device'], function (Layer, util, device) {
 			var layer = this,
 				width = data.width,
 				height = data.height,
-				spriteBg = layer.get('sprite-bg'),
-				spriteTown = layer.get('sprite-town');
+				doBg = layer.get('do-bg'),
+				doTown = layer.get('do-town');
 
-			spriteBg.width = width;
-			spriteBg.height = height;
+			doBg.setSize(width, height);
 
-			spriteTown.width = width;
-			spriteTown.height = height / 2;
+			doTown.setSize(width, height / 2);
+			doTown.moveTo(8, 8); // move to down
 
 		}
-
-
-
-
 
 	});
 

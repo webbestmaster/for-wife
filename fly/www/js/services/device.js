@@ -55,7 +55,7 @@ define(
 
 					width: 0,
 					height: 0,
-					orientation: '|',
+					orientation: deviceKeys.ORIENTATION.LANDSCAPE,
 					spaceSize: 0,
 
 					isTouch: false,
@@ -117,13 +117,13 @@ define(
 
 					mediator.installTo(device);
 
-					win.addEventListener('resize', this.onResize.bind(this), false);
+					win.addEventListener('resize', device.onResize.bind(device), false);
 
-					body.addEventListener(events.down, this.onDown.bind(this), false);
+					body.addEventListener(events.down, device.onDown.bind(device), false);
 
-					body.addEventListener(events.move, this.onMove.bind(this), false);
+					body.addEventListener(events.move, device.onMove.bind(device), false);
 
-					body.addEventListener(events.up, this.onUp.bind(this), false);
+					body.addEventListener(events.up, device.onUp.bind(device), false);
 
 					/*
 					 device.on('change:actionIsActive', function (self, actionIsActive) {
@@ -413,7 +413,7 @@ define(
 						attr = device.attr,
 						width = docElem.clientWidth,
 						height = docElem.clientHeight,
-						orientation = width > height ? '-' : '|',
+						orientation = width > height ? deviceKeys.ORIENTATION.LANDSCAPE : deviceKeys.ORIENTATION.PORTRAIT,
 						spaceSize = width * height;
 
 					attr.width = width;

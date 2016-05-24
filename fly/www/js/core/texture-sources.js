@@ -5,7 +5,8 @@ define(function () {
 
 	return [
 		'src/bg.json',
-		'src/town.json'
+		'src/town.json',
+		'src/square.json'
 	];
 
 });

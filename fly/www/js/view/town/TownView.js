@@ -1,5 +1,5 @@
 /*global define */
-define(['util', 'View', 'townViewKeys', 'rendererKeys', 'TownLayer'], function (util, View, townViewKeys, rendererKeys, TownLayer) {
+define(['util', 'View', 'townViewKeys', 'rendererKeys', 'TownLayer', 'HeartLayer'], function (util, View, townViewKeys, rendererKeys, TownLayer, HeartLayer) {
 
 	"use strict";
 
@@ -31,14 +31,15 @@ define(['util', 'View', 'townViewKeys', 'rendererKeys', 'TownLayer'], function (
 			// fly
 
 			var view = this,
-				townLayer = new TownLayer();
+				townLayer = new TownLayer(),
+				heartLayer = new HeartLayer();
 
 			view.publish(rendererKeys.APPEND, townLayer.get('stage'));
-			
 			view.set(townViewKeys.LAYER.TOWN, townLayer);
 
-			
-			
+			view.publish(rendererKeys.APPEND, heartLayer.get('stage'));
+			view.set(townViewKeys.LAYER.HEART, heartLayer);
+
 		}
 
 	});

@@ -1,0 +1,15 @@
+{
+"frames": {
+	"square": {
+		"frame": {"x":0, "y":0, "w":123, "h":123},
+		"spriteSourceSize": {"x":2,"y":2,"w":128,"h":128},
+		"sourceSize": {"w":128,"h":128}
+	}
+
+},
+"meta": {
+	"image": "square.png",
+	"size": {"w": 124, "h": 124},
+	"scale": "1"
+}
+}
