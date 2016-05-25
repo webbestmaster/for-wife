@@ -40,6 +40,7 @@ define(function (require) {
 
 			// objects/helpers
 			DisplayObject: 'core/DisplayObject',
+			displayObjectKeys: 'core/display-object-keys',
 
 			// view's core
 			View: 'view/_core/View',

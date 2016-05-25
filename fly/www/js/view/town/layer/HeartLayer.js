@@ -41,7 +41,7 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 		onResize: function () { // onResize: function (data) {
 
 			var layer = this;
-			
+
 			layer.stopItemsAnimate();
 			layer.moveItemsTo.apply(layer, layer.get('moveItemsTo'));
 

@@ -1,5 +1,5 @@
 /*global PIXI, TweenMax, Back, define */
-define(['util', 'device'], function (util, device) {
+define(['util', 'device', 'displayObjectKeys'], function (util, device, displayObjectKeys) {
 
 	/*
 	 define(['device', 'mediator', 'camera', 'cameraKeys', 'uiManagerKeys'],
@@ -21,7 +21,8 @@ define(['util', 'device'], function (util, device) {
 		var disObj = this;
 
 		disObj.attr = {
-			sprite: sprite
+			sprite: sprite,
+			tween: {}
 		};
 
 		disObj.setAnchorToCenter();
@@ -175,27 +176,117 @@ define(['util', 'device'], function (util, device) {
 			sprite = disObj.get('sprite'),
 			xy1 = device.getCoordinatesOfPoint(windowPoint),
 			xy2 = disObj.getCoordinatesOfPoint(objectPoint),
+			tweenId = options.tweenId || displayObjectKeys.TWEEN.DEFAULT_ID,
 			cfg = {
 				x: sprite.x - xy2.x + xy1.x + offsetX,
-				y: sprite.y - xy2.y + xy1.y + offsetY,
-				delay: options.delay || 0,
-				ease: options.ease || Back.easeOut
-			};
+				y: sprite.y - xy2.y + xy1.y + offsetY
+			},
+			tween;
+
+		if (options.delay) {
+			cfg.delay = options.delay;
+		}
+
+		if (options.ease) {
+			cfg.ease = options.ease;
+		}
 
 		if (options.onComplete) {
 			cfg.onComplete = options.onComplete;
 		}
 
-		TweenMax.killTweensOf(sprite);
-		TweenMax.to(sprite, options.time, cfg);
+		// disObj.stopAnimate(displayObjectKeys);
+
+		tween = new TweenMax(sprite, options.time, cfg);
+
+		disObj.setTween(tweenId, {
+			tween: tween,
+			time: options.time,
+			cfg: cfg
+		});
 
 	};
 
-	DisplayObject.prototype.stopAnimate = function () {
+	DisplayObject.prototype.setTween = function (tweenId, params) {
 
-		TweenMax.killTweensOf(this.get('sprite'));
+		var disObj = this,
+			tween = disObj.get('tween');
+
+		disObj.stopTween(tweenId);
+
+		tween[tweenId] = params;
 
 	};
+
+	DisplayObject.prototype.getTween = function (tweenId) {
+
+		return this.get('tween')[tweenId];
+
+	};
+
+	DisplayObject.prototype.stopAnimate = function (tweenId) {
+
+		return tweenId ? this.stopTween(tweenId) : this.stopAllTween();
+
+	};
+
+	DisplayObject.prototype.stopTween = function (tweenId) {
+
+		var disObj = this,
+			tweenData = disObj.getTween(tweenId);
+
+		// if no any data
+		if (!tweenData) {
+			return;
+		}
+
+		// if tween is stopped
+		if (!tweenData.tween) {
+			return;
+		}
+
+		tweenData.tween.kill();
+		tweenData.tween = null;
+		tweenData.time = 0;
+		tweenData.cfg = null;
+
+	};
+
+	DisplayObject.prototype.stopAllTween = function () {
+
+		var disObj = this,
+			tween = disObj.get('tween'),
+			tweenId;
+
+		for (tweenId in tween) {
+			if (tween.hasOwnProperty(tweenId)) {
+				disObj.stopTween(tweenId);
+			}
+		}
+
+	};
+
+/*
+	DisplayObject.prototype.pauseTween = function (name) {
+
+	};
+
+	DisplayObject.prototype.startTween = function (name, params) {
+
+
+	};
+*/
+
+
+
+
+
+
+
+
+
+
+
 
 	/*
 	 DisplayObject.prototype.mainInitialize = function () {
