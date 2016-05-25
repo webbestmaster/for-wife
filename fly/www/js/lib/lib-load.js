@@ -6,6 +6,7 @@ define(
 		'FPSMeter',
 		'PIXI',
 		'TweenMax',
+		'promise',
 		// internal libs
 		'EndlessArray',
 		'fontLoader',
