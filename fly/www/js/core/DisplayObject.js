@@ -165,7 +165,37 @@ define(['util', 'device'], function (util, device) {
 		this.setHeight(height);
 	};
 
+	DisplayObject.prototype.moveToAnimate = function (windowPoint, objectPoint, optionsArg, offsetsArg) {
 
+		var disObj = this,
+			options = typeof optionsArg === 'number' ? {time: optionsArg} : (optionsArg || {}),
+			offsets = offsetsArg || {},
+			offsetX = offsets.x || 0,
+			offsetY = offsets.y || 0,
+			sprite = disObj.get('sprite'),
+			xy1 = device.getCoordinatesOfPoint(windowPoint),
+			xy2 = disObj.getCoordinatesOfPoint(objectPoint),
+			cfg = {
+				x: sprite.x - xy2.x + xy1.x + offsetX,
+				y: sprite.y - xy2.y + xy1.y + offsetY,
+				delay: options.delay || 0,
+				ease: options.ease || Back.easeOut
+			};
+
+		if (options.onComplete) {
+			cfg.onComplete = options.onComplete;
+		}
+
+		TweenMax.killTweensOf(sprite);
+		TweenMax.to(sprite, options.time, cfg);
+
+	};
+
+	DisplayObject.prototype.stopAnimate = function () {
+
+		TweenMax.killTweensOf(this.get('sprite'));
+
+	};
 
 	/*
 	 DisplayObject.prototype.mainInitialize = function () {

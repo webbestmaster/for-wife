@@ -41,7 +41,8 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 		onResize: function () { // onResize: function (data) {
 
 			var layer = this;
-
+			
+			layer.stopItemsAnimate();
 			layer.moveItemsTo.apply(layer, layer.get('moveItemsTo'));
 
 		},
@@ -107,6 +108,8 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 
 			layer.moveItemsTo(5, 5);
 
+			layer.moveItemsToAnimate(9, 9, {time: 5});
+
 		},
 
 		moveItemsTo: function (windowPoint, objectPoint, offsetsArg) {
@@ -138,6 +141,43 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 
 			});
 
+		},
+
+		moveItemsToAnimate: function (windowPoint, objectPoint, options, offsetsArg) {
+
+			var layer = this,
+				items = layer.get('items'),
+				squareSize = layer.get('squareSize'),
+				squareWidth = squareSize.width,
+				squareHeight = squareSize.height,
+				offsets = offsetsArg || {},
+				offsetX = offsets.x || 0,
+				offsetY = offsets.y || 0,
+				fieldSize = layer.get('fieldSize'),
+				fieldOffset = util.getCoordinatesOfPoint(0, 0, fieldSize.width * squareWidth, fieldSize.height * squareHeight, objectPoint),
+				fieldOffsetX = fieldOffset.x,
+				fieldOffsetY = fieldOffset.y;
+
+			layer.set('moveItemsTo', [windowPoint, objectPoint, {
+				x: offsetX,
+				y: offsetY
+			}]);
+
+			items.forEach(function (item) {
+
+				item.moveToAnimate(windowPoint, 5, options, {
+					x: (item.get('itemX') + 0.5) * squareWidth + offsetX - fieldOffsetX,
+					y: (item.get('itemY') + 0.5) * squareHeight + offsetY - fieldOffsetY
+				});
+
+			});
+
+		},
+
+		stopItemsAnimate: function () {
+			this.get('items').forEach(function (item) {
+				item.stopAnimate();
+			});
 		}
 
 
