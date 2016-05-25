@@ -77,7 +77,27 @@ define(function () {
 
 		attrGet: function (key) {
 			return this.attr[key];
+		},
+
+		random: function (min, max) {
+
+			return Math.random() * (max - min) + min;
+
+		},
+
+		randomInt: function (min, max) {
+			return Math.floor((Math.random() * (max - min) + min));
+		},
+
+		decide: function (arr) {
+			return arr[this.randomInt(0, arr.length)];
 		}
+
+/*
+		assortFn: function () {
+			return Math.random() - 0.5;
+		}
+*/
 
 
 /*

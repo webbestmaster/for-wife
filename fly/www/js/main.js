@@ -16,6 +16,7 @@ define(function (require) {
 				FPSMeter: 'lib/external/fpsmeter',
 				PIXI: 'lib/external/pixi',
 				TweenMax: 'lib/external/TweenMax',
+				promise: 'lib/external/promise',
 				// internal libs
 				EndlessArray: 'lib/internal/endless-array',
 				fontLoader: 'lib/internal/font-loader',

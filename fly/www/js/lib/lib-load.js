@@ -13,7 +13,7 @@ define(
 	],
 	function () {
 		"use strict";
-		return arguments;
+		return this;
 		// just load needed libraries
 	}
 );

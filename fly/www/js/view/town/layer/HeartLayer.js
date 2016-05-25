@@ -1,4 +1,4 @@
-/*global define, window*/
+/*global define, window, Promise */
 define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, DisplayObject, device) {
 
 	"use strict";
@@ -97,6 +97,8 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 					item.set('itemX', symbolIndex);
 					item.set('itemY', lineIndex);
 
+					item.set('delay', util.random(0, 0.8));
+
 					item.setSize(squareWidth, squareHeight);
 
 					items.push(item);
@@ -106,9 +108,13 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 
 			layer.set('items', items);
 
-			layer.moveItemsTo(5, 5);
+			layer.moveItemsTo(2, 8);
 
-			layer.moveItemsToAnimate(9, 9, {time: 5});
+			layer.moveItemsToAnimate(5, 5, {time: 2.3}).then(function () {
+				layer.moveItemsToAnimate(4, 4, {time: 2.3}, {
+					x: 40
+				});
+			});
 
 		},
 
@@ -156,6 +162,58 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 				fieldSize = layer.get('fieldSize'),
 				fieldOffset = util.getCoordinatesOfPoint(0, 0, fieldSize.width * squareWidth, fieldSize.height * squareHeight, objectPoint),
 				fieldOffsetX = fieldOffset.x,
+				fieldOffsetY = fieldOffset.y,
+				screenOffset = device.getCoordinatesOfPoint(windowPoint),
+				screenOffsetX = screenOffset.x,
+				screenOffsetY = screenOffset.y;
+
+			layer.set('moveItemsTo', [windowPoint, objectPoint, {
+				x: offsetX,
+				y: offsetY
+			}]);
+
+			return Promise.all(items.map(function (item) {
+
+				item.doTween('rotation',
+					item.get('sprite'),
+					options.time,
+					{
+						rotation: util.decide([-1, 1]) * Math.PI,
+						ease: Back.easeOut.config(1.3),
+						delay: item.get('delay') + (options.delay || 0)
+					}
+				);
+
+				return item.doTween('move',
+					item.get('sprite').position,
+					options.time,
+					{
+						x: (item.get('itemX') + 0.5) * squareWidth + offsetX - fieldOffsetX + screenOffsetX,
+						y: (item.get('itemY') + 0.5) * squareHeight + offsetY - fieldOffsetY + screenOffsetY,
+						ease: Back.easeOut.config(1.05),
+						delay: item.get('delay') + (options.delay || 0)
+					}
+				);
+
+			}));
+
+		},
+
+
+/*
+		moveItemsToAnimate: function (windowPoint, objectPoint, options, offsetsArg) {
+
+			var layer = this,
+				items = layer.get('items'),
+				squareSize = layer.get('squareSize'),
+				squareWidth = squareSize.width,
+				squareHeight = squareSize.height,
+				offsets = offsetsArg || {},
+				offsetX = offsets.x || 0,
+				offsetY = offsets.y || 0,
+				fieldSize = layer.get('fieldSize'),
+				fieldOffset = util.getCoordinatesOfPoint(0, 0, fieldSize.width * squareWidth, fieldSize.height * squareHeight, objectPoint),
+				fieldOffsetX = fieldOffset.x,
 				fieldOffsetY = fieldOffset.y;
 
 			layer.set('moveItemsTo', [windowPoint, objectPoint, {
@@ -173,6 +231,8 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 			});
 
 		},
+*/
+
 
 		stopItemsAnimate: function () {
 			this.get('items').forEach(function (item) {

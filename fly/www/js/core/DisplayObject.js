@@ -1,4 +1,4 @@
-/*global PIXI, TweenMax, Back, define */
+/*global PIXI, TweenMax, Back, Promise, define */
 define(['util', 'device', 'displayObjectKeys'], function (util, device, displayObjectKeys) {
 
 	/*
@@ -74,15 +74,15 @@ define(['util', 'device', 'displayObjectKeys'], function (util, device, displayO
 
 	DisplayObject.prototype.moveTo = function (windowPoint, objectPoint, offsetsArg) {
 
-		var obj = this,
+		var disObj = this,
 			offsets = offsetsArg || {},
 			offsetX = offsets.x || 0,
 			offsetY = offsets.y || 0,
 			xy1 = device.getCoordinatesOfPoint(windowPoint),
-			xy2 = obj.getCoordinatesOfPoint(objectPoint),
-			spritePosition = obj.attr.sprite.position;
+			xy2 = disObj.getCoordinatesOfPoint(objectPoint),
+			spritePosition = disObj.get('sprite').position;
 
-		obj.set('moveTo', [windowPoint, objectPoint, {
+		disObj.set('moveTo', [windowPoint, objectPoint, {
 			x: offsetX,
 			y: offsetY
 		}]);
@@ -91,6 +91,30 @@ define(['util', 'device', 'displayObjectKeys'], function (util, device, displayO
 		spritePosition.y += xy1.y - xy2.y + offsetY;
 
 	};
+
+/*
+	DisplayObject.prototype.moveToXY = function (xy) {
+
+		this.get('sprite').position.set(xy.x, xy.y);
+
+	};
+*/
+
+/*
+	DisplayObject.prototype.getCoordinatesForPoint = function (windowPoint, objectPoint) {
+
+		var disObj = this,
+			bounds = disObj.getBounds(),
+			disObjXY = util.getCoordinatesOfPoint(0, 0, bounds.width, bounds.height, objectPoint),
+			screenXY = device.getCoordinatesOfPoint(windowPoint);
+
+		return {
+			x: screenXY.x - disObjXY.x,
+			y: screenXY.y - disObjXY.y
+		};
+
+	};
+*/
 
 	DisplayObject.prototype.getCoordinatesOfPoint = function (point) {
 
@@ -197,7 +221,7 @@ define(['util', 'device', 'displayObjectKeys'], function (util, device, displayO
 
 		// disObj.stopAnimate(displayObjectKeys);
 
-		tween = new TweenMax(sprite, options.time, cfg);
+		tween = new TweenMax(sprite.position, options.time, cfg);
 
 		disObj.setTween(tweenId, {
 			tween: tween,
@@ -233,7 +257,8 @@ define(['util', 'device', 'displayObjectKeys'], function (util, device, displayO
 	DisplayObject.prototype.stopTween = function (tweenId) {
 
 		var disObj = this,
-			tweenData = disObj.getTween(tweenId);
+			tweenData = disObj.getTween(tweenId),
+			tween;
 
 		// if no any data
 		if (!tweenData) {
@@ -245,10 +270,16 @@ define(['util', 'device', 'displayObjectKeys'], function (util, device, displayO
 			return;
 		}
 
-		tweenData.tween.kill();
+		tween = tweenData.tween;
+		tween.progress(1);
+		tween.kill();
+
 		tweenData.tween = null;
 		tweenData.time = 0;
 		tweenData.cfg = null;
+
+		tweenData.promise.resolve();
+		tweenData.promise = null;
 
 	};
 
@@ -263,6 +294,37 @@ define(['util', 'device', 'displayObjectKeys'], function (util, device, displayO
 				disObj.stopTween(tweenId);
 			}
 		}
+
+	};
+
+	DisplayObject.prototype.doTween = function (tweenId, object, time, cfg) {
+
+		var disObj = this;
+
+		return new Promise(function (resolve, reject) {
+
+			var onComplete = cfg.onComplete;
+
+			if (onComplete) {
+				cfg.onComplete = function () {
+					onComplete();
+					resolve();
+				};
+			} else {
+				cfg.onComplete = resolve;
+			}
+
+			disObj.setTween(tweenId || displayObjectKeys.TWEEN.DEFAULT_ID, {
+				tween: new TweenMax(object, time, cfg),
+				time: time,
+				cfg: cfg,
+				promise: {
+					resolve: resolve,
+					reject: reject
+				}
+			});
+
+		});
 
 	};
 
