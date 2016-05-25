@@ -1,5 +1,5 @@
 /*global define, window*/
-define(['Layer', 'util', 'DisplayObject'], function (Layer, util, DisplayObject) {
+define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, DisplayObject, device) {
 
 	"use strict";
 
@@ -23,7 +23,7 @@ define(['Layer', 'util', 'DisplayObject'], function (Layer, util, DisplayObject)
 			' 0000000 ',
 			'  00000  ',
 			'   000   ',
-			'    0    '
+			'    0   0'
 		],
 
 		initialize: function () {
@@ -38,17 +38,32 @@ define(['Layer', 'util', 'DisplayObject'], function (Layer, util, DisplayObject)
 
 		},
 
+		onResize: function () { // onResize: function (data) {
+
+			var layer = this;
+
+			layer.moveItemsTo.apply(layer, layer.get('moveItemsTo'));
+
+		},
+
 		defineItemSize: function () {
 
 			var layer = this,
-				squareSize = {
-					width: 40,
-					height: 40
-				};
+				itemWidth = 40,
+				itemHeight = 40,
+				itemsMap = layer.itemsMap,
+				itemsMapWidth = itemsMap[0].length,
+				itemsMapHeight = itemsMap.length;
 
-			layer.set('squareSize', squareSize);
+			layer.set('squareSize', {
+				width: itemWidth,
+				height: itemHeight
+			});
 
-			return squareSize;
+			layer.set('fieldSize', {
+				width: itemsMapWidth,
+				height: itemsMapHeight
+			});
 
 		},
 
@@ -83,17 +98,45 @@ define(['Layer', 'util', 'DisplayObject'], function (Layer, util, DisplayObject)
 
 					item.setSize(squareWidth, squareHeight);
 
-					item.moveTo(1, 1, {
-						x: symbolIndex * squareWidth,
-						y: lineIndex * squareHeight
-					});
-
 					items.push(item);
 
 				});
 			});
 
 			layer.set('items', items);
+
+			layer.moveItemsTo(5, 5);
+
+		},
+
+		moveItemsTo: function (windowPoint, objectPoint, offsetsArg) {
+
+			var layer = this,
+				items = layer.get('items'),
+				squareSize = layer.get('squareSize'),
+				squareWidth = squareSize.width,
+				squareHeight = squareSize.height,
+				offsets = offsetsArg || {},
+				offsetX = offsets.x || 0,
+				offsetY = offsets.y || 0,
+				fieldSize = layer.get('fieldSize'),
+				fieldOffset = util.getCoordinatesOfPoint(0, 0, fieldSize.width * squareWidth, fieldSize.height * squareHeight, objectPoint),
+				fieldOffsetX = fieldOffset.x,
+				fieldOffsetY = fieldOffset.y;
+
+			layer.set('moveItemsTo', [windowPoint, objectPoint, {
+				x: offsetX,
+				y: offsetY
+			}]);
+
+			items.forEach(function (item) {
+
+				item.moveTo(windowPoint, 5, {
+					x: (item.get('itemX') + 0.5) * squareWidth + offsetX - fieldOffsetX,
+					y: (item.get('itemY') + 0.5) * squareHeight + offsetY - fieldOffsetY
+				});
+
+			});
 
 		}
 

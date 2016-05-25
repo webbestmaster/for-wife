@@ -29,6 +29,48 @@ define(function () {
 
 		},
 
+		getCoordinatesOfPoint: function (x, y, width, height, point) {
+
+			var coordinates = {
+				x: x,
+				y: y
+			};
+
+			switch (point) {
+				case 2 :
+					coordinates.x += width / 2;
+					break;
+				case 3 :
+					coordinates.x += width;
+					break;
+				case 4 :
+					coordinates.y += height / 2;
+					break;
+				case 5 :
+					coordinates.x += width / 2;
+					coordinates.y += height / 2;
+					break;
+				case 6 :
+					coordinates.x += width;
+					coordinates.y += height / 2;
+					break;
+				case 7 :
+					coordinates.y += height;
+					break;
+				case 8 :
+					coordinates.x += width / 2;
+					coordinates.y += height;
+					break;
+				case 9 :
+					coordinates.x += width;
+					coordinates.y += height;
+					break;
+			}
+
+			return coordinates;
+
+		},
+
 		attrSet: function (key, value) {
 			this.attr[key] = value;
 		},

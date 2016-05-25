@@ -62,6 +62,7 @@ define(['Layer', 'util', 'device', 'DisplayObject'], function (Layer, util, devi
 				doTown = layer.get('do-town');
 
 			doBg.setSize(width, height);
+			doBg.moveTo(5, 5); // move to center
 
 			doTown.setSize(width, height / 2);
 			doTown.moveTo(8, 8); // move to down

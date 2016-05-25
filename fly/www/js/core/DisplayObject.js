@@ -24,9 +24,9 @@ define(['util', 'device'], function (util, device) {
 			sprite: sprite
 		};
 
-		// disObj.bindEventListeners();
+		disObj.setAnchorToCenter();
 
-		// disObj.setAnchorToCenter();
+		// disObj.bindEventListeners();
 
 	};
 
