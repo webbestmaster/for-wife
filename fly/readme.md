@@ -1,10 +1,6 @@
-Air Strike - html5 game
+<h1>Love card for my wife.</h1>
 
-Warning - Gulpfile is broken, do not use it, я сам его сломал, потому что нех** вы*6***ться!!!
+<h2>Abbreviations and acronyms:</h2>
+DO - Display Object - main object for UI elements
 
-
-Abbreviations and acronyms:
-DO - Display Object - main object for UI elements (buttons, backgrounds, views)
-GO - Game Object - main object for game's objects (Aircraft, Missiles)
-RAF - Request Animation Frame
 
