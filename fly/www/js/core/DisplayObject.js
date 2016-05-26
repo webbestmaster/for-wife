@@ -60,12 +60,13 @@ define(['util', 'device', 'displayObjectKeys'], function (util, device, displayO
 	};
 */
 
-	DisplayObject.prototype.setAnchorToCenter = function () {
-		/*
-		 DisplayObject.prototype.setAnchor = function (x, y) {
+
+	 DisplayObject.prototype.setAnchor = function (x, y) {
 		 this.attr.sprite.anchor.set(x, y);
-		 };
-		 */
+	 };
+
+
+	DisplayObject.prototype.setAnchorToCenter = function () {
 		// this.setAnchor(0.5, 0.5);
 
 		this.attr.sprite.anchor.set(0.5, 0.5);
@@ -325,6 +326,126 @@ define(['util', 'device', 'displayObjectKeys'], function (util, device, displayO
 			});
 
 		});
+
+	};
+
+	DisplayObject.prototype.setOffsetPosition = function (point1, point2, offsetPosition) {
+
+		var disObj = this,
+			sprite = disObj.get('sprite'),
+			width = sprite.width,
+			height = sprite.height,
+			unitTypeX = offsetPosition.unitTypeX,
+			unitTypeY = offsetPosition.unitTypeY,
+			offsetX = offsetPosition.x,
+			offsetY = offsetPosition.y,
+			xy1 = device.getCoordinatesOfPoint(point1),
+			xy2 = device.getCoordinatesOfPoint(point2),
+			x1 = xy1.x,
+			y1 = xy1.y,
+			x2 = xy2.x,
+			y2 = xy2.y,
+			boundWidth = x2 - x1,
+			boundHeight = y2 - y1;
+
+		switch (unitTypeX) {
+			case displayObjectKeys.UNIT.TYPE.UNIT:
+				offsetX = width * offsetX;
+				break;
+			case displayObjectKeys.UNIT.TYPE.PERCENT:
+				offsetX = width * offsetX / 100;
+				break;
+			case displayObjectKeys.UNIT.TYPE.PX:
+				break;
+			default:
+				console.log('--- unknown unit type - x');
+		}
+
+		switch (unitTypeY) {
+			case displayObjectKeys.UNIT.TYPE.UNIT:
+				offsetY = height * offsetY;
+				break;
+			case displayObjectKeys.UNIT.TYPE.PERCENT:
+				offsetY = height * offsetY / 100;
+				break;
+			case displayObjectKeys.UNIT.TYPE.PX:
+				break;
+			default:
+				console.log('--- unknown unit type - y');
+		}
+
+		sprite.position.x = boundWidth / 2 + x1 + offsetX;
+		sprite.position.y = boundHeight / 2 + y1 + offsetY;
+
+	};
+
+	DisplayObject.prototype.backgroundFor = function (point1, point2, type, offsetPositionArg) {
+
+		var disObj = this,
+			offsetPosition = offsetPositionArg || {},
+			unitTypeX = offsetPosition.unitTypeX || displayObjectKeys.UNIT.TYPE.DEFAULT,
+			unitTypeY = offsetPosition.unitTypeY || displayObjectKeys.UNIT.TYPE.DEFAULT,
+			positionX = offsetPosition.x || 0,
+			positionY = offsetPosition.y || 0;
+
+		offsetPosition = {
+			unitTypeX: unitTypeX,
+			unitTypeY: unitTypeY,
+			x: positionX,
+			y: positionY
+		};
+
+		switch (type) {
+			case displayObjectKeys.BACKGROUND.CONTAIN:
+				disObj.backgroundContainFor(point1, point2);
+				break;
+			case displayObjectKeys.BACKGROUND.COVER:
+				disObj.backgroundCoverFor(point1, point2);
+				break;
+			default:
+				console.log('--- unknown background type');
+		}
+
+		disObj.setOffsetPosition(point1, point2, offsetPosition);
+
+	};
+
+	DisplayObject.prototype.backgroundCoverFor = function (point1, point2) {
+
+		var disObj = this,
+			sprite = disObj.get('sprite'),
+			texture = sprite.texture,
+			textureWidth = texture.width,
+			textureHeight = texture.height,
+			textureQ = textureWidth / textureHeight,
+			xy1 = device.getCoordinatesOfPoint(point1),
+			xy2 = device.getCoordinatesOfPoint(point2),
+			x1 = xy1.x,
+			y1 = xy1.y,
+			x2 = xy2.x,
+			y2 = xy2.y,
+			boundWidth = x2 - x1,
+			boundHeight = y2 - y1,
+			boundsQ = boundWidth / boundHeight;
+
+		if ( boundsQ < textureQ ) {
+			sprite.height = boundHeight;
+			sprite.width = boundHeight / textureHeight * textureWidth;
+		} else {
+			sprite.width = boundWidth;
+			sprite.height = boundWidth / textureWidth * textureHeight;
+		}
+
+	};
+
+	DisplayObject.prototype.backgroundContainFor = function (point1, point2) {
+
+		var disObj = this,
+			x = bounds.x,
+			y = bounds.y,
+			width = bounds.width,
+			height = bounds.height;
+
 
 	};
 

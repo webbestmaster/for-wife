@@ -4,7 +4,7 @@
 летит сразу за сердцем, потом перед
 
 
-// DO - добавить клёвые методы как coverFor и containFor
+// DO - добавить клёвые методы как coverFor и containFor - backgroundFor(x, y, width, height, 'coverORContain')
 и передовать туда координаты рами для которой нужно растягиваться или сжиматься
 
 // DO - добавить в метод moveToAnimate возможность через option

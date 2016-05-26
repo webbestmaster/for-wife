@@ -112,7 +112,7 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 
 			layer.moveItemsToAnimate(5, 5, {time: 2.3}).then(function () {
 				layer.moveItemsToAnimate(4, 4, {time: 2.3}, {
-					x: 40
+					x: squareWidth
 				});
 			});
 
@@ -165,7 +165,8 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 				fieldOffsetY = fieldOffset.y,
 				screenOffset = device.getCoordinatesOfPoint(windowPoint),
 				screenOffsetX = screenOffset.x,
-				screenOffsetY = screenOffset.y;
+				screenOffsetY = screenOffset.y,
+				mainDelay = options.delay || 0;
 
 			layer.set('moveItemsTo', [windowPoint, objectPoint, {
 				x: offsetX,
@@ -176,13 +177,13 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 
 				var sprite = item.get('sprite'),
 					time = options.time,
-					delay = item.get('delay') + (options.delay || 0);
+					delay = item.get('delay') + mainDelay;
 
 				item.doTween('rotation',
 					sprite,
 					time,
 					{
-						rotation: util.decide([-1, 1]) * Math.PI,
+						rotation: util.decide([-1, 1, 0.5, -0.5, 0]) * Math.PI,
 						ease: Back.easeOut.config(1.3),
 						delay: delay
 					}

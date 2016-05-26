@@ -1,5 +1,5 @@
 /*global define, window*/
-define(['Layer', 'util', 'device', 'DisplayObject'], function (Layer, util, device, DisplayObject) {
+define(['Layer', 'util', 'device', 'DisplayObject', 'displayObjectKeys'], function (Layer, util, device, DisplayObject, displayObjectKeys) {
 
 	"use strict";
 
@@ -64,8 +64,13 @@ define(['Layer', 'util', 'device', 'DisplayObject'], function (Layer, util, devi
 			doBg.setSize(width, height);
 			doBg.moveTo(5, 5); // move to center
 
-			doTown.setSize(width, height / 2);
-			doTown.moveTo(8, 8); // move to down
+			doTown.backgroundFor(4, 9, displayObjectKeys.BACKGROUND.COVER);
+			// doTown.setSize(width, height / 2);
+			// doTown.moveTo(8, 8); // move to down
+
+
+
+
 
 		}
 
