@@ -321,7 +321,6 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 
 				case layer.keys.ITEMS_STATE.FALLING:
 
-
 					break;
 
 				case layer.keys.ITEMS_STATE.FLYING:
