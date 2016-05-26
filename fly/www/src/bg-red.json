@@ -1,0 +1,15 @@
+{
+"frames": {
+	"bg-red": {
+		"frame": {"x":0, "y":0, "w":3, "h":564},
+		"spriteSourceSize": {"x":0,"y":0,"w":3,"h":564},
+		"sourceSize": {"w":3,"h":564}
+	}
+
+},
+"meta": {
+	"image": "bg-red.png",
+	"size": {"w": 4, "h": 565},
+	"scale": "1"
+}
+}

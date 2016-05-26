@@ -4,9 +4,10 @@ define(function () {
 	"use strict";
 
 	return [
-		'src/bg.json',
+		// 'src/bg.json',
 		'src/town.json',
-		'src/square.json'
+		'src/square.json',
+		'src/bg-red.json'
 	];
 
 });

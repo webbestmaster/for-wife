@@ -25,7 +25,7 @@ define(['util', 'device', 'displayObjectKeys'], function (util, device, displayO
 			tween: {}
 		};
 
-		disObj.setAnchorToCenter();
+		disObj.setPivotToCenter();
 
 		// disObj.bindEventListeners();
 
@@ -61,15 +61,18 @@ define(['util', 'device', 'displayObjectKeys'], function (util, device, displayO
 */
 
 
+/*
 	 DisplayObject.prototype.setAnchor = function (x, y) {
 		 this.attr.sprite.anchor.set(x, y);
 	 };
+*/
 
 
-	DisplayObject.prototype.setAnchorToCenter = function () {
-		// this.setAnchor(0.5, 0.5);
+	DisplayObject.prototype.setPivotToCenter = function () {
 
-		this.attr.sprite.anchor.set(0.5, 0.5);
+		var sprite = this.attr.sprite;
+
+		sprite.pivot.set(sprite.width * 0.5, sprite.height * 0.5);
 
 	};
 
@@ -358,7 +361,7 @@ define(['util', 'device', 'displayObjectKeys'], function (util, device, displayO
 			case displayObjectKeys.UNIT.TYPE.PX:
 				break;
 			default:
-				console.log('--- unknown unit type - x');
+				console.log('--- unknown unit type - x'); // remove
 		}
 
 		switch (unitTypeY) {
@@ -371,7 +374,7 @@ define(['util', 'device', 'displayObjectKeys'], function (util, device, displayO
 			case displayObjectKeys.UNIT.TYPE.PX:
 				break;
 			default:
-				console.log('--- unknown unit type - y');
+				console.log('--- unknown unit type - y'); // remove
 		}
 
 		sprite.position.x = boundWidth / 2 + x1 + offsetX;
@@ -403,7 +406,7 @@ define(['util', 'device', 'displayObjectKeys'], function (util, device, displayO
 				disObj.backgroundCoverFor(point1, point2);
 				break;
 			default:
-				console.log('--- unknown background type');
+				console.log('--- unknown background type'); // remove
 		}
 
 		disObj.setOffsetPosition(point1, point2, offsetPosition);

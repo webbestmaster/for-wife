@@ -61,7 +61,7 @@ define(
 					isTouch: false,
 					_logMoving: new EndlessArray(10), // use endless array
 					_logDown: new EndlessArray(10), // use endless array
-					_pinchStartEvents: [], // normal array
+					_pinchStartEvents: [], // normal array, capt O
 					_pointDataX: 0.0,
 					_pointDataY: 0.0,
 					_pointDataScale: 1.0,

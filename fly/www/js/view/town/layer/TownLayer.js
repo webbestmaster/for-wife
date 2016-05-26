@@ -35,7 +35,7 @@ define(['Layer', 'util', 'device', 'DisplayObject', 'displayObjectKeys'], functi
 
 			var layer = this,
 				stage = layer.get('stage'),
-				sprite = new win.PIXI.Sprite.fromFrame('bg');
+				sprite = new win.PIXI.Sprite.fromFrame('bg-red');
 
 			layer.set('do-bg', new DisplayObject(sprite));
 			stage.addChild(sprite);
