@@ -174,24 +174,28 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 
 			return Promise.all(items.map(function (item) {
 
+				var sprite = item.get('sprite'),
+					time = options.time,
+					delay = item.get('delay') + (options.delay || 0);
+
 				item.doTween('rotation',
-					item.get('sprite'),
-					options.time,
+					sprite,
+					time,
 					{
 						rotation: util.decide([-1, 1]) * Math.PI,
 						ease: Back.easeOut.config(1.3),
-						delay: item.get('delay') + (options.delay || 0)
+						delay: delay
 					}
 				);
 
 				return item.doTween('move',
-					item.get('sprite').position,
-					options.time,
+					sprite.position,
+					time,
 					{
 						x: (item.get('itemX') + 0.5) * squareWidth + offsetX - fieldOffsetX + screenOffsetX,
 						y: (item.get('itemY') + 0.5) * squareHeight + offsetY - fieldOffsetY + screenOffsetY,
 						ease: Back.easeOut.config(1.05),
-						delay: item.get('delay') + (options.delay || 0)
+						delay: delay
 					}
 				);
 
