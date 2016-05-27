@@ -59,7 +59,9 @@ define(['Layer', 'util', 'device', 'DisplayObject', 'displayObjectKeys'], functi
 				width = data.width,
 				height = data.height,
 				doBg = layer.get('do-bg'),
-				doTown = layer.get('do-town');
+				doTown = layer.get('do-town'),
+				townSprite = doTown.get('sprite'),
+				townMovingQ = 2;
 
 			doBg.setSize(width, height);
 			doBg.moveTo(5, 5); // move to center
@@ -68,16 +70,11 @@ define(['Layer', 'util', 'device', 'DisplayObject', 'displayObjectKeys'], functi
 			// doTown.setSize(width, height / 2);
 			// doTown.moveTo(8, 8); // move to down
 
-
-
-			// TODO: refactor this, ep-ta!
-			var townSprite = doTown.get('sprite');
-			townSprite.width *= 2;
-
-			doTown.doTween('tratata', townSprite.position, 0.4, {
-				x: townSprite.position.x + 10, repeat: -1, yoyo: true, ease: Sine.easeInOut
+			townSprite.width *= townMovingQ;
+			townSprite.position.x -= townSprite.width / townMovingQ * 0.5;
+			doTown.doTween('town-moving', townSprite.position, 60, {
+				x: townSprite.position.x + townSprite.width / townMovingQ, repeat: -1, yoyo: true, ease: Sine.easeInOut
 			});
-
 
 		}
 
