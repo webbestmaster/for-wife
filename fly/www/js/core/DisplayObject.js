@@ -194,10 +194,10 @@ define(['util', 'device', 'displayObjectKeys'], function (util, device, displayO
 		this.setHeight(height);
 	};
 
-	DisplayObject.prototype.moveToAnimate = function (windowPoint, objectPoint, optionsArg, offsetsArg) {
+	DisplayObject.prototype.moveToAnimate = function (windowPoint, objectPoint, options, offsetsArg) {
 
 		var disObj = this,
-			options = typeof optionsArg === 'number' ? {time: optionsArg} : (optionsArg || {}),
+			// options = typeof optionsArg === 'number' ? {time: optionsArg} : (optionsArg || {}),
 			offsets = offsetsArg || {},
 			offsetX = offsets.x || 0,
 			offsetY = offsets.y || 0,
@@ -210,6 +210,17 @@ define(['util', 'device', 'displayObjectKeys'], function (util, device, displayO
 				y: sprite.y - xy2.y + xy1.y + offsetY
 			},
 			tween;
+
+		// TODO: refactor this
+		// try to use util.extendObject or smht else
+
+		if (options.repeat) {
+			cfg.repeat = options.repeat;
+		}
+
+		if (options.yoyo) {
+			cfg.yoyo = options.yoyo;
+		}
 
 		if (options.delay) {
 			cfg.delay = options.delay;

@@ -7,7 +7,9 @@ define(function () {
 		// 'src/bg.json',
 		'src/town.json',
 		'src/square.json',
-		'src/bg-red.json'
+		'src/bg-red.json',
+		'src/hellicopter.json'
+
 	];
 
 });
