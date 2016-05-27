@@ -283,6 +283,8 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 
 			layer.moveItemsTo(2, 8);
 
+			layer.fadeInItems(4);
+
 			return layer.moveItemsToAnimate(5, 5, {time: 2.3});
 
 		},
@@ -336,10 +338,25 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 
 			}
 
+		},
 
+		fadeInItems: function (time) {
+
+			var layer = this;
+
+			layer.get('items').forEach(function (item) {
+
+				var sprite = item.get('sprite');
+
+				sprite.alpha = 0;
+
+				item.doTween('fadeIn', sprite, time, {
+					alpha: 1
+				});
+
+			});
 
 		}
-
 
 	});
 
