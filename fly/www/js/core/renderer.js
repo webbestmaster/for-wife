@@ -5,7 +5,8 @@ define(['device', 'mediator', 'deviceKeys', 'FPSMeter', 'rendererKeys'],
 
 		"use strict";
 
-		var win = window;
+		var win = window,
+			doc = win.document;
 
 		return {
 
@@ -45,7 +46,7 @@ define(['device', 'mediator', 'deviceKeys', 'FPSMeter', 'rendererKeys'],
 
 				var tempCanvas, isWebGLSupport;
 
-				tempCanvas = win.document.createElement('canvas');
+				tempCanvas = doc.createElement('canvas');
 
 				try {
 					isWebGLSupport = !!(tempCanvas.getContext('webgl') || tempCanvas.getContext('experimental-webgl'));
@@ -74,7 +75,7 @@ define(['device', 'mediator', 'deviceKeys', 'FPSMeter', 'rendererKeys'],
 			start: function () {
 
 				var renderer = this,
-					ticker = win.PIXI.ticker.shared;
+					ticker = PIXI.ticker.shared;
 
 				ticker.add(renderer.draw, renderer);
 
@@ -99,7 +100,7 @@ define(['device', 'mediator', 'deviceKeys', 'FPSMeter', 'rendererKeys'],
 
 					deviceData = device.attr,
 
-					pixiRenderer = win.PIXI.autoDetectRenderer(
+					pixiRenderer = PIXI.autoDetectRenderer(
 						deviceData.width,
 						deviceData.height,
 						{
@@ -107,9 +108,9 @@ define(['device', 'mediator', 'deviceKeys', 'FPSMeter', 'rendererKeys'],
 						}
 					);
 
-				renderer.stage = new win.PIXI.Container();
+				renderer.stage = new PIXI.Container();
 
-				win.document.body.appendChild(pixiRenderer.view);
+				doc.body.appendChild(pixiRenderer.view);
 
 				renderer.renderer = pixiRenderer;
 
