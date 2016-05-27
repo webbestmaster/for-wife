@@ -72,7 +72,7 @@ define(['Layer', 'util', 'device', 'DisplayObject', 'displayObjectKeys'], functi
 
 			townSprite.width *= townMovingQ;
 			townSprite.position.x -= townSprite.width / townMovingQ * 0.5;
-			doTown.doTween('town-moving', townSprite.position, 120, {
+			doTown.doTween('town-moving', townSprite.position, 120 / 20, {
 				x: townSprite.position.x + townSprite.width / townMovingQ, repeat: -1, yoyo: true, ease: Sine.easeInOut
 			});
 

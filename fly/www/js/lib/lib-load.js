@@ -2,7 +2,7 @@
 define(
 	[
 		// external libs
-		'Deferred',
+		// 'Deferred',
 		'FPSMeter',
 		'PIXI',
 		'TweenMax',

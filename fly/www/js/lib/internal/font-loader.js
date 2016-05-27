@@ -1,5 +1,5 @@
-/*global define, Image */
-define(['Deferred'], function (Deferred) {
+/*global define, Image, Promise */
+define(function () {
 
 	"use strict";
 
@@ -7,22 +7,23 @@ define(['Deferred'], function (Deferred) {
 
 		load: function (path) {
 
-			var image = new Image(),
-				defer = new Deferred(),
-				style = image.style;
+			return new Promise(function (resolve, reject) {
 
-			style.position = 'fixed';
-			style.top = '0';
-			style.left = '0';
+				var image = new Image(),
+					style = image.style;
 
-			image.onerror = image.onload = function () {
-				this.onerror = this.onload = null;
-				defer.resolve();
-			};
+				style.position = 'fixed';
+				style.top = '0';
+				style.left = '0';
 
-			image.src = path;
+				image.onerror = image.onload = function () {
+					this.onerror = this.onload = null;
+					resolve();
+				};
 
-			return defer.promise();
+				image.src = path;
+
+			});
 
 		}
 

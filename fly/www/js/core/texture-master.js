@@ -1,30 +1,26 @@
-/*global define, window */
-define(['log', 'Deferred', 'textureSources'],
-	function (
-			log, // remove
-			Deferred,
-			textureSources
-	) {
+/*global define, window, PIXI, Promise */
+define(['log', 'textureSources'], function (log, textureSources) {
 
-		"use strict";
+	"use strict";
 
-		var win = window;
+	return {
 
-		return {
+		// TODO: get resolution from camera
+		// resolution: 1,
 
-			// TODO: get resolution from camera
-			// resolution: 1,
+		loader: null,
+		resources: null,
 
-			loader: null,
-			resources: null,
+		baseUrl: '', // relative from resolution
 
-			baseUrl: '', // relative from resolution
+		initializeTextures: function () {
 
-			initializeTextures: function () {
+			PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 
-				var textureMaster = this,
-					defer = new Deferred(),
-					loader = win.PIXI.loader;
+			var textureMaster = this,
+				loader = PIXI.loader;
+
+			return new Promise(function (resolve, reject) {
 
 				// loader.baseUrl = master.baseUrl;
 
@@ -43,15 +39,12 @@ define(['log', 'Deferred', 'textureSources'],
 						textureMaster.loader = loader;
 						textureMaster.resources = resources;
 
-						defer.resolve();
+						resolve();
 					});
 
-				return defer.promise();
+			});
 
-			}
+		}
 
-		};
-	}
-
-
-);
+	};
+});

@@ -12,7 +12,7 @@ define(function (require) {
 			// load libs
 			libLoad: 'lib/lib-load',
 				// external libs
-				Deferred: 'lib/external/deferred',
+				// Deferred: 'lib/external/deferred',
 				FPSMeter: 'lib/external/fpsmeter',
 				PIXI: 'lib/external/pixi',
 				TweenMax: 'lib/external/TweenMax',
@@ -52,7 +52,8 @@ define(function (require) {
 				// TownView's objects
 				townViewKeys: 'view/town/town-view-keys',
 				TownLayer: 'view/town/layer/TownLayer',
-				HeartLayer: 'view/town/layer/HeartLayer'
+				HeartLayer: 'view/town/layer/HeartLayer',
+				FlyLayer: 'view/town/layer/FlyLayer'
 
 
 
@@ -129,7 +130,7 @@ define(function (require) {
 
 			loader
 				.load()
-				.done(function () {
+				.then(function () {
 					renderer.initialize();
 					new TownView();
 				});

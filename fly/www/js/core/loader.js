@@ -1,19 +1,17 @@
-/*global define */
-define(['Deferred', 'fontLoader', 'textureMaster'],
-	function (Deferred, fontLoader, textureMaster) {
+/*global define, Promise */
+define(['fontLoader', 'textureMaster'],
+	function (fontLoader, textureMaster) {
 
 		"use strict";
 
 		return {
 			load: function () {
 
-				// PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
+				return Promise.all([
+					// fontLoader.load('font/quake.otf'),
+					textureMaster.initializeTextures()
+				]);
 
-				return Deferred
-					.when([
-						// fontLoader.load('font/quake.otf'),
-						textureMaster.initializeTextures()
-					]);
 			}
 		};
 	}
