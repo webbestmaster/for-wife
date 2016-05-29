@@ -101,6 +101,7 @@ define(['device', 'mediator', 'deviceKeys', 'FPSMeter', 'rendererKeys'],
 					deviceData = device.attr,
 
 					pixiRenderer = PIXI.autoDetectRenderer(
+					// pixiRenderer = new PIXI.CanvasRenderer(
 						deviceData.width,
 						deviceData.height,
 						{

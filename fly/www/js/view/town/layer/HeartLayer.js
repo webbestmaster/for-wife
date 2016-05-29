@@ -29,8 +29,8 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 		keys: {
 			ITEMS_STATE: {
 				FALLING: 'items-state:falling',
-				FLYING: 'items-state:flying'
-
+				FLYING: 'items-state:flying',
+				MOVE_OUT: 'items-state:move-out'
 			}
 		},
 
@@ -43,6 +43,8 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 			layer.defineItemSize();
 
 			layer.createItems();
+
+			layer.startFallingItems();
 
 		},
 
@@ -121,11 +123,33 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 
 			layer.set('items', items);
 
-			layer.startFallingItems().then(function () {
-				layer.startFlyingItems();
+		},
+
+		stopItemsAnimation: function () {
+
+			this.get('items').forEach(function (item) {
+				item.stopAnimate();
 			});
 
 		},
+
+/*
+		runAnimate: function () {
+
+			var layer = this;
+
+			// layer.stopItemsAnimation();
+
+			layer.startFallingItems().then(function () {
+				return layer.startFlyingItems();
+			}).then(function () {
+				return layer.startMoveOutItems();
+			}).then(function () {
+				layer.runAnimate();
+			});
+
+		},
+*/
 
 		createSquareGraphic: function () {
 
@@ -139,7 +163,7 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 
 			graphics.boundsPadding = squarePadding;
 
-			graphics.beginFill(0xFFFFFF);
+			graphics.beginFill(0xEEEEEE);
 
 			graphics.drawRoundedRect(
 				squarePadding,
@@ -152,6 +176,15 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 			graphics.endFill();
 
 			return graphics;
+
+		},
+
+		stopMoveTween: function () {
+
+			this.get('items').forEach(function (item) {
+				item.stopTween('move');
+				item.stopTween('rotation');
+			});
 
 		},
 
@@ -169,6 +202,8 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 				fieldOffset = util.getCoordinatesOfPoint(0, 0, fieldSize.width * squareWidth, fieldSize.height * squareHeight, objectPoint),
 				fieldOffsetX = fieldOffset.x,
 				fieldOffsetY = fieldOffset.y;
+
+			layer.stopMoveTween();
 
 			layer.set('moveItemsTo', [windowPoint, objectPoint, {
 				x: offsetX,
@@ -203,7 +238,10 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 				screenOffset = device.getCoordinatesOfPoint(windowPoint),
 				screenOffsetX = screenOffset.x,
 				screenOffsetY = screenOffset.y,
-				mainDelay = options.delay || 0;
+				mainDelay = options.delay || 0,
+				ease = options.ease || Back.easeOut.config(1.3);
+
+			layer.stopMoveTween();
 
 			layer.set('moveItemsTo', [windowPoint, objectPoint, {
 				x: offsetX,
@@ -221,7 +259,7 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 					time,
 					{
 						rotation: util.decide([-1, 1, 0.5, -0.5, 0]) * Math.PI,
-						ease: Back.easeOut.config(1.3),
+						ease: ease,
 						delay: delay
 					}
 				);
@@ -232,7 +270,7 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 					{
 						x: (item.get('itemX') + 0.5) * squareWidth + offsetX - fieldOffsetX + screenOffsetX,
 						y: (item.get('itemY') + 0.5) * squareHeight + offsetY - fieldOffsetY + screenOffsetY,
-						ease: Back.easeOut.config(1.05),
+						ease: ease,
 						delay: delay
 					}
 				);
@@ -283,9 +321,14 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 
 			layer.moveItemsTo(2, 8);
 
-			layer.fadeInItems(4);
-
-			return layer.moveItemsToAnimate(5, 5, {time: 2.3});
+			Promise.all([
+				layer.fadeInItems(2),
+				layer.moveItemsToAnimate(5, 5, {time: 2.3})
+			])
+			.then(function () {
+				layer.set('itemsState', layer.keys.ITEMS_STATE.FLYING);
+				layer.proceedItemsAnimate();
+			});
 
 		},
 
@@ -301,33 +344,63 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 
 			layer.set('itemsState', layer.keys.ITEMS_STATE.FLYING);
 
-			items.forEach(function (item) {
+			Promise.all(items.map(function (item) {
 
 				var sprite = item.get('sprite');
 
-				item.doTween('flying', sprite.position, 2, {y: sprite.position.y + deltaHeight, repeat: -1, yoyo: true, ease: Sine.easeInOut});
+				return item.doTween('flying', sprite.position, 2, {y: sprite.position.y + deltaHeight, repeat: 1, yoyo: true, ease: Sine.easeInOut});
+
+			})).then(function () {
+				layer.set('itemsState', layer.keys.ITEMS_STATE.MOVE_OUT);
+				layer.proceedItemsAnimate();
+			})
+
+		},
+
+/*
+		itemsTweenToStart: function () {
+
+			this.get('items').forEach(function (item) {
+
+				var tweensData = item.get('tween'),
+					tween,
+					key;
+
+				for (key in tweensData) {
+					tween = tweensData[key].tween;
+					tween.progress(0);
+					tween.play();
+				}
 
 			});
 
 		},
+*/
 
 		proceedItemsAnimate: function () {
 
-			var layer = this;
+			var layer = this,
+				items = layer.get('items');
 
-			layer.get('items').forEach(function (item) {
-				item.stopAnimate();
-			});
+			layer.stopItemsAnimation();
 
 			switch (layer.get('itemsState')) {
 
 				case layer.keys.ITEMS_STATE.FALLING:
+
+					layer.startFallingItems();
 
 					break;
 
 				case layer.keys.ITEMS_STATE.FLYING:
 
 					layer.startFlyingItems();
+
+					break;
+
+				case layer.keys.ITEMS_STATE.MOVE_OUT:
+
+					layer.startMoveOutItems();
 
 					break;
 
@@ -340,21 +413,55 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 
 		},
 
-		fadeInItems: function (time) {
+		startMoveOutItems: function () {
 
 			var layer = this;
 
-			layer.get('items').forEach(function (item) {
+			layer.set('itemsState', layer.keys.ITEMS_STATE.MOVE_OUT);
+
+			layer.moveItemsTo(5, 5);
+
+			Promise.all([
+				layer.moveItemsToAnimate(8, 2, {time: 2.3, ease: Sine.easeInOut}),
+				layer.fadeOutItems(4)
+			]).then(function () {
+				layer.set('itemsState', layer.keys.ITEMS_STATE.FALLING);
+				layer.proceedItemsAnimate();
+			});
+
+		},
+
+		fadeInItems: function (time) {
+
+			return Promise.all(this.get('items').map(function (item) {
 
 				var sprite = item.get('sprite');
 
 				sprite.alpha = 0;
 
-				item.doTween('fadeIn', sprite, time, {
-					alpha: 1
+				return item.doTween('fadeIn', sprite, time, {
+					alpha: 1,
+					ease: Linear.easeNone
 				});
 
-			});
+			}));
+
+		},
+
+		fadeOutItems: function (time) {
+
+			return Promise.all(this.get('items').map(function (item) {
+
+				var sprite = item.get('sprite');
+
+				sprite.alpha = 1;
+
+				return item.doTween('fadeOut', sprite, time, {
+					alpha: 0,
+					ease: Linear.easeNone
+				});
+
+			}));
 
 		}
 

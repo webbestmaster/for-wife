@@ -286,14 +286,16 @@ define(['util', 'device', 'displayObjectKeys'], function (util, device, displayO
 		}
 
 		tween = tweenData.tween;
-		tween.progress(1);
+		// it is nor needed
+		// tween.progress(0);
 		tween.kill();
 
 		tweenData.tween = null;
 		tweenData.time = 0;
 		tweenData.cfg = null;
 
-		tweenData.promise.resolve();
+		// it is not needed
+		// tweenData.promise.reject();
 		tweenData.promise = null;
 
 	};
