@@ -8,7 +8,7 @@ define(function () {
 		'src/town.json',
 		'src/square.json',
 		'src/bg-red.json',
-		'src/hellicopter.json'
+		'src/helicopter.json'
 
 	];
 

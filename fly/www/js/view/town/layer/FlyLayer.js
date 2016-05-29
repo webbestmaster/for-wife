@@ -48,15 +48,17 @@ define(['Layer', 'util', 'device', 'DisplayObject', 'displayObjectKeys'], functi
 			layer.set('moveClip', new DisplayObject(moveClip));
 			layer.get('stage').addChild(moveClip);
 
+			moveClip.scale.x = 5;
+			moveClip.scale.y = 5;
 
 			layer.get('moveClip').moveToAnimate(5, 5, {
-				time: 1,
+				time: 4,
 				repeat: -1,
 				ease: Sine.easeInOut,
 				yoyo: true
 			});
 
-			moveClip.animationSpeed = 0.05;
+			moveClip.animationSpeed = .3;
 
 			moveClip.play();
 
