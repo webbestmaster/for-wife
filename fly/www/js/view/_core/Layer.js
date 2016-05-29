@@ -38,6 +38,14 @@ define(['util', 'mediator', 'deviceKeys'],function (util, mediator, deviceKeys) 
 
 	};
 
+	Layer.prototype.show = function () {
+		this.get('stage').visible = true;
+	};
+
+	Layer.prototype.hide = function () {
+		this.get('stage').visible = false;
+	};
+
 	Layer.prototype.set = util.attrSet;
 
 	Layer.prototype.get = util.attrGet;

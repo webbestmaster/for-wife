@@ -53,13 +53,9 @@ define(function (require) {
 				townViewKeys: 'view/town/town-view-keys',
 				TownLayer: 'view/town/layer/TownLayer',
 				HeartLayer: 'view/town/layer/HeartLayer',
-				FlyLayer: 'view/town/layer/FlyLayer'
-
-
-
-
-
-
+				heartLayerKeys: 'view/town/layer/heartLayerKeys',
+				FlyLayer: 'view/town/layer/FlyLayer',
+				flyLayerKeys: 'view/town/layer/flyLayerKeys'
 
 /*
 			// init libs

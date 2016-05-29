@@ -1,5 +1,5 @@
 /*global define, window, PIXI */
-define(['Layer', 'util', 'device', 'DisplayObject', 'displayObjectKeys'], function (Layer, util, device, DisplayObject, displayObjectKeys) {
+define(['Layer', 'util', 'device', 'DisplayObject', /*'displayObjectKeys', */ 'flyLayerKeys', 'heartLayerKeys'], function (Layer, util, device, DisplayObject, flyLayerKeys, heartLayerKeys /*, displayObjectKeys*/) {
 
 	"use strict";
 
@@ -26,22 +26,74 @@ define(['Layer', 'util', 'device', 'DisplayObject', 'displayObjectKeys'], functi
 			layer.createHelicopter();
 			layer.createBoard();
 
-			layer.showLeftToRight();
+			layer.bindEventListeners();
 
-/*
-			layer.onResize({
-				width: device.attr.width,
-				height: device.attr.height
-			});
-*/
+			layer.set('flyDirection', false);
+			layer.set('flyState', flyLayerKeys.FLY_STATE.NO_ANIMATE);
+
+			// layer.onResize({
+			// 	width: device.attr.width,
+			// 	height: device.attr.height
+			// });
+
+			layer.hide();
+
+		},
+
+		onResize: function () {
+
+			this.proceedItemsAnimate();
 
 		},
 
-/*
-		onResize: function (data) {
+		proceedItemsAnimate: function () {
+
+			var layer = this,
+				items = layer.get('items');
+
+			layer.stopFlyAnimation();
+
+			switch (layer.get('flyState')) {
+
+				case flyLayerKeys.FLY_STATE.FLYING:
+
+					layer.showFly();
+
+					break;
+
+				case flyLayerKeys.FLY_STATE.NO_ANIMATE:
+
+					console.log('no any fly animate'); // remove
+
+					break;
+
+				default:
+
+					console.log('FLY - hm, I do not know what is happened.'); // remove
+					console.log('Love yor life and WRITE CODE!!!');		// remove
+
+			}
+
+
+			// layer.stopFlyAnimation();
+		},
+
+		stopFlyAnimation: function () {
+
+			var layer = this;
+			layer.get('board').stopAnimate();
+			layer.get('helicopter').stopAnimate();
 
 		},
-*/
+
+		bindEventListeners: function () {
+
+			var layer = this;
+
+			layer.subscribe(flyLayerKeys.SHOW.FLY, layer.showFly);
+
+		},
+
 		defineScale: function () {
 
 			var minSize = Math.min(device.attr.width, device.attr.height);
@@ -63,19 +115,10 @@ define(['Layer', 'util', 'device', 'DisplayObject', 'displayObjectKeys'], functi
 
 			helicopter.setScaleBySize(layer.get('scale'));
 
-/*
-			helicopter.moveToAnimate(5, 5, {
-				time: 4,
-				repeat: -1,
-				ease: Sine.easeInOut,
-				yoyo: true
-			});
-*/
-
 			moveClip.animationSpeed = .3;
 
 			moveClip.play();
-
+			
 		},
 
 		createBoard: function () {
@@ -91,43 +134,95 @@ define(['Layer', 'util', 'device', 'DisplayObject', 'displayObjectKeys'], functi
 
 		},
 
-		showLeftToRight: function () {
+		showFly: function () {
+
+			// TODO: refactor this hit :(
 
 			var layer = this,
 				helicopter = layer.get('helicopter'),
-				board = layer.get('board');
+				board = layer.get('board'),
+				flyDirection = layer.get('flyDirection'),
+				helicopterSprite = helicopter.get('sprite'),
+				boardSprite = board.get('sprite'),
+				boardWidth = board.getWidth(),
+				helicopterWidth = helicopter.getWidth(),
+				layerScale = layer.get('scale');
 
-			helicopter.get('sprite').scale.x = -layer.get('scale');
+			layer.show();
 
-			// set start position
+			layer.set('flyState', flyLayerKeys.FLY_STATE.FLYING);
 
-			board.moveTo(4, 2, {
-				x: -board.getWidth() / 2
-			});
-			helicopter.moveTo(4, 8, {
-				x: -5.5 * layer.get('scale') - board.getWidth() / 2
-			});
+			if (flyDirection) {
+				helicopterSprite.scale.x = -Math.abs(helicopterSprite.scale.x);
 
-			board.moveToAnimate(6, 2, { time: 7 }, {
-				x: 5.5 * layer.get('scale') + helicopter.getWidth() / 2,
-				ease: Linear.easeNone
-			});
-			helicopter.moveToAnimate(6, 8, { time: 7 }, {
-				x: helicopter.getWidth() / 2,
-				ease: Linear.easeNone
-			});
+				// set start position
+				board.moveTo(4, 2, {
+					x: -boardWidth / 2
+				});
+				helicopter.moveTo(4, 8, {
+					x: -5.5 * layerScale - boardWidth / 2
+				});
 
-			board.doTween('upDown', board.get('sprite'), 1, {
-				y: board.get('sprite').position.y - helicopter.getHeight() / 7 * layer.get('scale'),
+				board.moveToAnimate(6, 2, {time: 7, ease: Linear.easeNone}, {
+					x: 5.5 * layerScale + helicopterWidth / 2
+				});
+				helicopter.moveToAnimate(6, 8,
+					{
+						time: 7,
+						ease: Linear.easeNone,
+						onComplete: function () {
+							layer.set('flyDirection', !flyDirection);
+							layer.set('flyState', flyLayerKeys.FLY_STATE.NO_ANIMATE);
+							layer.publish(heartLayerKeys.SHOW.HEART);
+							layer.hide();
+						}
+					},
+					{x: helicopterWidth / 2}
+				);
+
+			} else {
+
+				helicopterSprite.scale.x = Math.abs(helicopterSprite.scale.x);
+
+				// set start position
+				board.moveTo(6, 2, {
+					x: boardWidth / 2
+				});
+				helicopter.moveTo(6, 8, {
+					x: 4.5 * layerScale + boardWidth / 2
+				});
+
+				board.moveToAnimate(4, 2, {time: 7, ease: Linear.easeNone}, {
+					x: -4.5 * layerScale - helicopterWidth / 2
+				});
+				helicopter.moveToAnimate(4, 8,
+					{
+						time: 7,
+						ease: Linear.easeNone,
+						onComplete: function () {
+							layer.set('flyDirection', !flyDirection);
+							layer.set('flyState', flyLayerKeys.FLY_STATE.NO_ANIMATE);
+							layer.publish(heartLayerKeys.SHOW.HEART);
+							layer.hide();
+						}
+					},
+					{x: -helicopterWidth / 2}
+				);
+
+			}
+
+			board.doTween('upDown', boardSprite, 1, {
+				y: boardSprite.position.y - layer.get('scale') * 5,
 				yoyo: true,
 				repeat: -1,
 				ease: Sine.easeInOut
 			});
-			helicopter.doTween('upDown', helicopter.get('sprite'), 1, {
-					y: helicopter.get('sprite').position.y - helicopter.getHeight() / 7 * layer.get('scale'),
-					yoyo: true,
-					repeat: -1,
-					ease: Sine.easeInOut
+
+			helicopter.doTween('upDown', helicopterSprite, 1, {
+				y: helicopterSprite.position.y - layer.get('scale') * 5,
+				yoyo: true,
+				repeat: -1,
+				ease: Sine.easeInOut
 			});
 
 		}

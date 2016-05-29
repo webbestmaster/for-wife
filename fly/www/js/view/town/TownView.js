@@ -1,6 +1,6 @@
 /*global define */
-define(['util', 'View', 'townViewKeys', 'rendererKeys', 'TownLayer', 'HeartLayer', 'FlyLayer'],
-	function (util, View, townViewKeys, rendererKeys, TownLayer, HeartLayer, FlyLayer) {
+define(['util', 'View', 'townViewKeys', 'rendererKeys', 'TownLayer', 'HeartLayer', 'FlyLayer', 'heartLayerKeys'],
+	function (util, View, townViewKeys, rendererKeys, TownLayer, HeartLayer, FlyLayer, heartLayerKeys) {
 
 	"use strict";
 
@@ -44,6 +44,8 @@ define(['util', 'View', 'townViewKeys', 'rendererKeys', 'TownLayer', 'HeartLayer
 
 			view.publish(rendererKeys.APPEND, flyLayer.get('stage'));
 			view.set(townViewKeys.LAYER.FLY, flyLayer);
+
+			view.publish(heartLayerKeys.SHOW.HEART);
 
 		}
 

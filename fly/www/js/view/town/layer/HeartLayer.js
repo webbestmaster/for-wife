@@ -1,5 +1,5 @@
 /*global define, window, Promise, PIXI */
-define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, DisplayObject, device) {
+define(['Layer', 'util', 'DisplayObject', 'device', 'heartLayerKeys', 'flyLayerKeys'], function (Layer, util, DisplayObject, device, heartLayerKeys, flyLayerKeys) {
 
 	"use strict";
 
@@ -26,14 +26,6 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 			'    0   0'
 		],
 
-		keys: {
-			ITEMS_STATE: {
-				FALLING: 'items-state:falling',
-				FLYING: 'items-state:flying',
-				MOVE_OUT: 'items-state:move-out'
-			}
-		},
-
 		initialize: function () {
 
 			var layer = this;
@@ -44,16 +36,28 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 
 			layer.createItems();
 
-			layer.startFallingItems();
+			layer.set('itemsState', heartLayerKeys.ITEMS_STATE.NO_ANIMATE);
+
+			// layer.startFallingItems();
+
+			layer.bindEventListeners();
 
 		},
 
 		onResize: function () { // onResize: function (data) {
 
+			// var layer = this;
+
+			this.proceedItemsAnimate();
+			// layer.moveItemsTo.apply(layer, layer.get('moveItemsTo'));
+
+		},
+
+		bindEventListeners: function () {
+
 			var layer = this;
 
-			layer.proceedItemsAnimate();
-			// layer.moveItemsTo.apply(layer, layer.get('moveItemsTo'));
+			layer.subscribe(heartLayerKeys.SHOW.HEART, layer.startFallingItems);
 
 		},
 
@@ -317,16 +321,17 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 
 			var layer = this;
 
-			layer.set('itemsState', layer.keys.ITEMS_STATE.FALLING);
+			layer.set('itemsState', heartLayerKeys.ITEMS_STATE.FALLING);
 
 			layer.moveItemsTo(2, 8);
+
+			layer.show();
 
 			Promise.all([
 				layer.fadeInItems(2),
 				layer.moveItemsToAnimate(5, 5, {time: 2.3})
-			])
-			.then(function () {
-				layer.set('itemsState', layer.keys.ITEMS_STATE.FLYING);
+			]).then(function () {
+				layer.set('itemsState', heartLayerKeys.ITEMS_STATE.FLYING);
 				layer.proceedItemsAnimate();
 			});
 
@@ -342,16 +347,16 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 
 			layer.moveItemsTo(5, 5); // needed for onResize in during falling
 
-			layer.set('itemsState', layer.keys.ITEMS_STATE.FLYING);
+			layer.set('itemsState', heartLayerKeys.ITEMS_STATE.FLYING);
 
 			Promise.all(items.map(function (item) {
 
 				var sprite = item.get('sprite');
 
-				return item.doTween('flying', sprite.position, 2, {y: sprite.position.y + deltaHeight, repeat: 1, yoyo: true, ease: Sine.easeInOut});
+				return item.doTween('flying', sprite.position, 2, {y: sprite.position.y + deltaHeight, repeat: 3, yoyo: true, ease: Sine.easeInOut});
 
 			})).then(function () {
-				layer.set('itemsState', layer.keys.ITEMS_STATE.MOVE_OUT);
+				layer.set('itemsState', heartLayerKeys.ITEMS_STATE.MOVE_OUT);
 				layer.proceedItemsAnimate();
 			})
 
@@ -386,19 +391,25 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 
 			switch (layer.get('itemsState')) {
 
-				case layer.keys.ITEMS_STATE.FALLING:
+				case heartLayerKeys.ITEMS_STATE.NO_ANIMATE:
+
+					console.log('no any animate'); // remove
+
+					break;
+
+				case heartLayerKeys.ITEMS_STATE.FALLING:
 
 					layer.startFallingItems();
 
 					break;
 
-				case layer.keys.ITEMS_STATE.FLYING:
+				case heartLayerKeys.ITEMS_STATE.FLYING:
 
 					layer.startFlyingItems();
 
 					break;
 
-				case layer.keys.ITEMS_STATE.MOVE_OUT:
+				case heartLayerKeys.ITEMS_STATE.MOVE_OUT:
 
 					layer.startMoveOutItems();
 
@@ -417,7 +428,7 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 
 			var layer = this;
 
-			layer.set('itemsState', layer.keys.ITEMS_STATE.MOVE_OUT);
+			layer.set('itemsState', heartLayerKeys.ITEMS_STATE.MOVE_OUT);
 
 			layer.moveItemsTo(5, 5);
 
@@ -425,8 +436,9 @@ define(['Layer', 'util', 'DisplayObject', 'device'], function (Layer, util, Disp
 				layer.moveItemsToAnimate(8, 2, {time: 2.3, ease: Sine.easeInOut}),
 				layer.fadeOutItems(4)
 			]).then(function () {
-				layer.set('itemsState', layer.keys.ITEMS_STATE.FALLING);
-				layer.proceedItemsAnimate();
+				layer.set('itemsState', heartLayerKeys.ITEMS_STATE.NO_ANIMATE);
+				layer.publish(flyLayerKeys.SHOW.FLY);
+				layer.hide();
 			});
 
 		},
