@@ -21,7 +21,12 @@ define(['Layer', 'util', 'device', 'DisplayObject', 'displayObjectKeys'], functi
 
 			layer.super.prototype.initialize.call(layer, arguments);
 
-			layer.createHelicopters();
+			layer.defineScale();
+
+			layer.createHelicopter();
+			layer.createBoard();
+
+			layer.showLeftToRight();
 
 /*
 			layer.onResize({
@@ -37,30 +42,93 @@ define(['Layer', 'util', 'device', 'DisplayObject', 'displayObjectKeys'], functi
 
 		},
 */
+		defineScale: function () {
 
-		createHelicopters: function () {
+			var minSize = Math.min(device.attr.width, device.attr.height);
+
+			this.set('scale', Math.round(minSize / 60));
+
+		},
+
+		createHelicopter: function () {
 
 			var layer = this,
 				texture1 = PIXI.Texture.fromFrame('helicopter-1.png'),
 				texture2 = PIXI.Texture.fromFrame('helicopter-2.png'),
-				moveClip = new PIXI.extras.MovieClip([texture1, texture2]);
+				moveClip = new PIXI.extras.MovieClip([texture1, texture2]),
+				helicopter = new DisplayObject(moveClip);
 
-			layer.set('moveClip', new DisplayObject(moveClip));
+			layer.set('helicopter', helicopter);
 			layer.get('stage').addChild(moveClip);
 
-			moveClip.scale.x = 5;
-			moveClip.scale.y = 5;
+			helicopter.setScaleBySize(layer.get('scale'));
 
-			layer.get('moveClip').moveToAnimate(5, 5, {
+/*
+			helicopter.moveToAnimate(5, 5, {
 				time: 4,
 				repeat: -1,
 				ease: Sine.easeInOut,
 				yoyo: true
 			});
+*/
 
 			moveClip.animationSpeed = .3;
 
 			moveClip.play();
+
+		},
+
+		createBoard: function () {
+
+			var layer = this,
+				sprite = new PIXI.Sprite.fromFrame('board.png'),
+				board = new DisplayObject(sprite);
+
+			board.setScaleBySize(layer.get('scale'));
+
+			layer.set('board', board);
+			layer.get('stage').addChild(sprite);
+
+		},
+
+		showLeftToRight: function () {
+
+			var layer = this,
+				helicopter = layer.get('helicopter'),
+				board = layer.get('board');
+
+			helicopter.get('sprite').scale.x = -layer.get('scale');
+
+			// set start position
+
+			board.moveTo(4, 2, {
+				x: -board.getWidth() / 2
+			});
+			helicopter.moveTo(4, 8, {
+				x: -5.5 * layer.get('scale') - board.getWidth() / 2
+			});
+
+			board.moveToAnimate(6, 2, { time: 7 }, {
+				x: 5.5 * layer.get('scale') + helicopter.getWidth() / 2,
+				ease: Linear.easeNone
+			});
+			helicopter.moveToAnimate(6, 8, { time: 7 }, {
+				x: helicopter.getWidth() / 2,
+				ease: Linear.easeNone
+			});
+
+			board.doTween('upDown', board.get('sprite'), 1, {
+				y: board.get('sprite').position.y - helicopter.getHeight() / 7 * layer.get('scale'),
+				yoyo: true,
+				repeat: -1,
+				ease: Sine.easeInOut
+			});
+			helicopter.doTween('upDown', helicopter.get('sprite'), 1, {
+					y: helicopter.get('sprite').position.y - helicopter.getHeight() / 7 * layer.get('scale'),
+					yoyo: true,
+					repeat: -1,
+					ease: Sine.easeInOut
+			});
 
 		}
 

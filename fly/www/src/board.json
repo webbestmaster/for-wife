@@ -1,0 +1,15 @@
+{
+"frames": {
+	"board.png": {
+		"frame": {"x":0, "y":0, "w":16, "h":8},
+		"spriteSourceSize": {"x":0,"y":0,"w":16,"h":8},
+		"sourceSize": {"w":16,"h":8}
+	}
+
+},
+"meta": {
+	"image": "board.png",
+	"size": {"w": 18, "h": 10},
+	"scale": "1"
+}
+}

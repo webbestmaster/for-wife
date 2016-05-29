@@ -189,9 +189,26 @@ define(['util', 'device', 'displayObjectKeys'], function (util, device, displayO
 		this.attr.sprite.height = height;
 	};
 
+	DisplayObject.prototype.getWidth = function () {
+		return this.attr.sprite.width;
+	};
+
+	DisplayObject.prototype.getHeight = function () {
+		return this.attr.sprite.height;
+	};
+
 	DisplayObject.prototype.setSize = function (width, height) {
 		this.setWidth(width);
 		this.setHeight(height);
+	};
+
+
+	DisplayObject.prototype.setScaleBySize = function (scale) {
+
+		var sprite = this.attr.sprite;
+		sprite.width = sprite.texture.width * scale;
+		sprite.height = sprite.texture.height * scale;
+
 	};
 
 	DisplayObject.prototype.moveToAnimate = function (windowPoint, objectPoint, options, offsetsArg) {
