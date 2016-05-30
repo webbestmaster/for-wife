@@ -88,8 +88,7 @@ define(['Layer', 'util', 'DisplayObject', 'device', 'heartLayerKeys', 'flyLayerK
 
 			var layer = this,
 				items = [],
-				itemsMap = layer.itemsMap,
-				stage = layer.get('stage');
+				itemsMap = layer.itemsMap;
 
 			itemsMap.forEach(function (line, lineIndex) {
 
@@ -112,7 +111,7 @@ define(['Layer', 'util', 'DisplayObject', 'device', 'heartLayerKeys', 'flyLayerK
 
 					item = new DisplayObject(graphics);
 
-					stage.addChild(graphics);
+					layer.addSprite(graphics);
 
 					item.set('itemX', symbolIndex);
 					item.set('itemY', lineIndex);

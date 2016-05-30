@@ -111,11 +111,11 @@ define(['Layer', 'util', 'device', 'DisplayObject', /*'displayObjectKeys', */ 'f
 				helicopter = new DisplayObject(moveClip);
 
 			layer.set('helicopter', helicopter);
-			layer.get('stage').addChild(moveClip);
+			layer.addSprite(moveClip);
 
 			helicopter.setScaleBySize(layer.get('scale'));
 
-			moveClip.animationSpeed = .3;
+			moveClip.animationSpeed = 0.5;
 
 			moveClip.play();
 			
@@ -130,7 +130,7 @@ define(['Layer', 'util', 'device', 'DisplayObject', /*'displayObjectKeys', */ 'f
 			board.setScaleBySize(layer.get('scale'));
 
 			layer.set('board', board);
-			layer.get('stage').addChild(sprite);
+			layer.addSprite(sprite);
 
 		},
 

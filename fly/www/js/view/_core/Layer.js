@@ -46,6 +46,12 @@ define(['util', 'mediator', 'deviceKeys'],function (util, mediator, deviceKeys) 
 		this.get('stage').visible = false;
 	};
 
+	Layer.prototype.addSprite = function (sprite) {
+		
+		this.get('stage').addChild(sprite);
+		
+	};
+	
 	Layer.prototype.set = util.attrSet;
 
 	Layer.prototype.get = util.attrGet;
