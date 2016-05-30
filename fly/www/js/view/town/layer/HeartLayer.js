@@ -327,8 +327,8 @@ define(['Layer', 'util', 'DisplayObject', 'device', 'heartLayerKeys', 'flyLayerK
 			layer.show();
 
 			Promise.all([
-				layer.fadeInItems(2),
-				layer.moveItemsToAnimate(5, 5, {time: 2.3})
+				layer.fadeInItems(1.7),
+				layer.moveItemsToAnimate(5, 5, {time: 1.6})
 			]).then(function () {
 				layer.set('itemsState', heartLayerKeys.ITEMS_STATE.FLYING);
 				layer.proceedItemsAnimate();
@@ -352,7 +352,7 @@ define(['Layer', 'util', 'DisplayObject', 'device', 'heartLayerKeys', 'flyLayerK
 
 				var sprite = item.get('sprite');
 
-				return item.doTween('flying', sprite.position, 2, {y: sprite.position.y + deltaHeight, repeat: 3, yoyo: true, ease: Sine.easeInOut});
+				return item.doTween('flying', sprite.position, 1.5, {y: sprite.position.y + deltaHeight, repeat: 3, yoyo: true, ease: Sine.easeInOut});
 
 			})).then(function () {
 				layer.set('itemsState', heartLayerKeys.ITEMS_STATE.MOVE_OUT);
@@ -432,8 +432,8 @@ define(['Layer', 'util', 'DisplayObject', 'device', 'heartLayerKeys', 'flyLayerK
 			layer.moveItemsTo(5, 5);
 
 			Promise.all([
-				layer.moveItemsToAnimate(8, 2, {time: 2.3, ease: Sine.easeInOut}),
-				layer.fadeOutItems(4)
+				layer.moveItemsToAnimate(8, 2, {time: 1.6, ease: Sine.easeInOut}),
+				layer.fadeOutItems(1.7)
 			]).then(function () {
 				layer.set('itemsState', heartLayerKeys.ITEMS_STATE.NO_ANIMATE);
 				layer.publish(flyLayerKeys.SHOW.FLY);

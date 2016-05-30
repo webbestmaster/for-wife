@@ -10,7 +10,8 @@ define(
 		// internal libs
 		'EndlessArray',
 		'fontLoader',
-		'util'
+		'util',
+		'Counter'
 	],
 	function () {
 		"use strict";

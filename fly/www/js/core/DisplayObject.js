@@ -482,6 +482,12 @@ define(['util', 'device', 'displayObjectKeys'], function (util, device, displayO
 
 	};
 
+	DisplayObject.prototype.setText = function (text) {
+
+		this.get('sprite').text = text;
+
+	};
+
 /*
 	DisplayObject.prototype.pauseTween = function (name) {
 

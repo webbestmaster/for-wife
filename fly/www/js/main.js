@@ -21,6 +21,7 @@ define(function (require) {
 				EndlessArray: 'lib/internal/endless-array',
 				fontLoader: 'lib/internal/font-loader',
 				util: 'lib/internal/util',
+				Counter: 'lib/internal/Counter',
 
 			// init services, all services are internal
 				log: 'services/log',
