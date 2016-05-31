@@ -1,4 +1,4 @@
-/*global define, window*/
+/*global define, window, PIXI*/
 define(['Layer', 'util', 'device', 'DisplayObject', 'displayObjectKeys', 'Counter', 'flyLayerKeys'], function (Layer, util, device, DisplayObject, displayObjectKeys, Counter, flyLayerKeys) {
 
 	"use strict";
@@ -20,6 +20,8 @@ define(['Layer', 'util', 'device', 'DisplayObject', 'displayObjectKeys', 'Counte
 			var layer = this;
 
 			layer.super.prototype.initialize.call(layer, arguments);
+
+			layer.set('fontSize', util.attr.font.size.value);
 
 			layer.addSpriteBg();
 			layer.addSpriteTown();
@@ -97,7 +99,7 @@ define(['Layer', 'util', 'device', 'DisplayObject', 'displayObjectKeys', 'Counte
 			var layer = this,
 				style = {
 					// font : 'bold italic 36px Arial',
-					font: 'normal normal 16px monospace',
+					font: 'normal normal ' + layer.get('fontSize') + 'px monospace',
 					fill: '#FFFFFF',
 					stroke: '#222222',
 					strokeThickness: 3

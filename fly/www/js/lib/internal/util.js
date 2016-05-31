@@ -1,9 +1,27 @@
-/*global define */
+/*global window, define */
 define(function () {
 
 	"use strict";
 
 	return {
+
+		attr: {
+			font: {
+				size: {
+					min: 14,
+					max: 24,
+					value: null
+				}
+			}
+		},
+
+		initialize: function () {
+
+			var util = this;
+
+			util.defineFontSize();
+
+		},
 
 		extend: function (child, parent, prototypeArg) {
 
@@ -91,6 +109,19 @@ define(function () {
 
 		decide: function (arr) {
 			return arr[this.randomInt(0, arr.length)];
+		},
+
+		defineFontSize: function () {
+
+			var util = this,
+				docElem = window.document.documentElement,
+				fontSizeData = util.attr.font.size,
+				fontSize = Math.round(14 * Math.pow(docElem.clientWidth * docElem.clientHeight / 153600, 0.5)); // 153600 = 320 * 480
+
+			fontSize = Math.min(fontSize, fontSizeData.max);
+			fontSize = Math.max(fontSize, fontSizeData.min);
+			fontSizeData.value = Math.round(fontSize);
+
 		}
 
 /*

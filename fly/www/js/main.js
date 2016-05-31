@@ -113,15 +113,19 @@ define(function (require) {
 			'loader',
 			'device',
 			'renderer',
-			'TownView'
+			'TownView',
+			'util'
 		],
 		function (
 			libLoad,
 			loader,
 			device,
 			renderer,
-			TownView
+			TownView,
+			util
 		) {
+
+			util.initialize();
 
 			device.initialize();
 
