@@ -5,8 +5,7 @@ var gulp = require('gulp'),
 	minifyHTML = require('gulp-minify-html'),
 	minifyCss = require('gulp-minify-css'),
 	rjs = require('gulp-requirejs'),
-	uglify = require('gulp-uglify'),
-	fs = require('fs');
+	uglify = require('gulp-uglify');
 
 gulp.task('default', function () {
 	return gulp.start('copy-assets', 'html', 'css', 'js');
@@ -54,7 +53,7 @@ gulp.task('collect-js', function () {
 			// copy paths from main.js
 			paths: {
 
-
+				// load libs
 				libLoad: 'lib/lib-load',
 				// external libs
 				// Deferred: 'lib/external/deferred',
@@ -79,25 +78,24 @@ gulp.task('collect-js', function () {
 				mediator: 'services/mediator',
 
 				// core
-
 				// sources
 				loader: 'core/loader',
-				textureMaster: 'core/texture-master',
-				textureSources: 'core/texture-sources',
-				soundMaster: 'core/sound-master',
-				soundSources: 'core/sound-sources',
+				textureMaster: 'core/texture/texture-master',
+				textureSources: 'core/texture/texture-sources',
+				soundMaster: 'core/sound/sound-master',
+				soundSources: 'core/sound/sound-sources',
 
 				// rendering
-				renderer: 'core/renderer',
-				rendererKeys: 'core/renderer-keys',
+				renderer: 'core/renderer/renderer',
+				rendererKeys: 'core/renderer/renderer-keys',
 
 				// objects/helpers
-				DisplayObject: 'core/DisplayObject',
-				displayObjectKeys: 'core/display-object-keys',
+				DisplayObject: 'core/display-object/DisplayObject',
+				displayObjectKeys: 'core/display-object/display-object-keys',
 
 				// view's core
-				View: 'view/_core/View',
-				Layer: 'view/_core/Layer',
+				View: 'view/view-core/View',
+				Layer: 'view/view-core/Layer',
 
 				// other views
 				TownView: 'view/town/TownView',
@@ -108,9 +106,6 @@ gulp.task('collect-js', function () {
 				heartLayerKeys: 'view/town/layer/heartLayerKeys',
 				FlyLayer: 'view/town/layer/FlyLayer',
 				flyLayerKeys: 'view/town/layer/flyLayerKeys'
-
-
-
 
 			}
 		}))
@@ -128,7 +123,7 @@ gulp.task('uglify-js', ['collect-js'], function () {
 gulp.task('copy-assets', function () {
 
 	// folders
-	['src', 'font'].forEach(function (dir) {
+	['src', 'sound'].forEach(function (dir) {
 		return gulp.src('./www/' + dir + '/**/*')
 			.pipe(gulp.dest('./dist/www/' + dir));
 	});
@@ -137,7 +132,7 @@ gulp.task('copy-assets', function () {
 	['favicon.ico', 'js/require.js'].forEach(function (pathToFile) {
 
 		// remove file's name from the path
-		var pathToFileFolders = pathToFile.indexOf('/') === -1 ? '' :  pathToFile.replace(/\/[^\/]+?$/, '');
+		var pathToFileFolders = pathToFile.indexOf('/') === -1 ? '' : pathToFile.replace(/\/[^\/]+?$/, '');
 
 		return gulp.src('./www/' + pathToFile)
 			.pipe(gulp.dest('./dist/www/' + pathToFileFolders));
