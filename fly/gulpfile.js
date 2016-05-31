@@ -6,25 +6,7 @@ var gulp = require('gulp'),
 	minifyCss = require('gulp-minify-css'),
 	rjs = require('gulp-requirejs'),
 	uglify = require('gulp-uglify'),
-	fs = require('fs'),
-	requirePaths;
-
-(function () {
-
-	requirePaths =
-		JSON.parse(
-			fs.readFileSync('www/js/require-config.js')
-			.toString()
-			.replace(/\/\/[\s\S]+?\n/g, '') 	// remove comments
-			.replace(/\'/g, '\"') 				// prop: 'value' to prop : "value"
-			.replace(/(\S+)\:/g, '\"$1\":') 	// prop: "value" to "prop" : "value"
-			.match(/\{[\s\S]+\}/)
-			.toString()
-	);
-
-	console.log(requirePaths);
-
-}());
+	fs = require('fs');
 
 gulp.task('default', function () {
 	return gulp.start('copy-assets', 'html', 'css', 'js');
@@ -70,7 +52,67 @@ gulp.task('collect-js', function () {
 			baseUrl: './www/js/',
 			out: 'main.js',
 			// copy paths from main.js
-			paths: requirePaths
+			paths: {
+
+
+				libLoad: 'lib/lib-load',
+				// external libs
+				// Deferred: 'lib/external/deferred',
+				es5Sham: 'lib/external/es5-sham',
+				es5Shim: 'lib/external/es5-shim',
+
+				FPSMeter: 'lib/external/fpsmeter',
+				PIXI: 'lib/external/pixi',
+				TweenMax: 'lib/external/TweenMax',
+				promise: 'lib/external/promise',
+				sound: 'lib/external/sound',
+				// internal libs
+				EndlessArray: 'lib/internal/endless-array',
+				// fontLoader: 'lib/internal/font-loader',
+				util: 'lib/internal/util',
+				Counter: 'lib/internal/Counter',
+
+				// init services, all services are internal
+				log: 'services/log',
+				device: 'services/device',
+				deviceKeys: 'services/device-keys',
+				mediator: 'services/mediator',
+
+				// core
+
+				// sources
+				loader: 'core/loader',
+				textureMaster: 'core/texture-master',
+				textureSources: 'core/texture-sources',
+				soundMaster: 'core/sound-master',
+				soundSources: 'core/sound-sources',
+
+				// rendering
+				renderer: 'core/renderer',
+				rendererKeys: 'core/renderer-keys',
+
+				// objects/helpers
+				DisplayObject: 'core/DisplayObject',
+				displayObjectKeys: 'core/display-object-keys',
+
+				// view's core
+				View: 'view/_core/View',
+				Layer: 'view/_core/Layer',
+
+				// other views
+				TownView: 'view/town/TownView',
+				// TownView's objects
+				townViewKeys: 'view/town/town-view-keys',
+				TownLayer: 'view/town/layer/TownLayer',
+				HeartLayer: 'view/town/layer/HeartLayer',
+				heartLayerKeys: 'view/town/layer/heartLayerKeys',
+				FlyLayer: 'view/town/layer/FlyLayer',
+				flyLayerKeys: 'view/town/layer/flyLayerKeys'
+
+
+
+
+			}
 		}))
 		.pipe(gulp.dest('./dist/www/js/'));
 
