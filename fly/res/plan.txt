@@ -17,5 +17,6 @@
 добавить музыку
 https://www.youtube.com/watch?v=CT8t_1JXWn8 - взять вот такое или похожее музло
 
-
+чекать поддержку соунда с помощь этой ссылки
+http://www.createjs.com/docs/soundjs/classes/Sound.html#property_capabilities
 
