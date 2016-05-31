@@ -1,6 +1,6 @@
 /*global define, Promise */
-define(['fontLoader', 'textureMaster'],
-	function (fontLoader, textureMaster) {
+define(['textureMaster', 'soundMaster'],
+	function (textureMaster, soundMaster) {
 
 		"use strict";
 
@@ -9,6 +9,8 @@ define(['fontLoader', 'textureMaster'],
 
 				return Promise.all([
 					// fontLoader.load('font/quake.otf'),
+					soundMaster.initializeSounds(),
+
 					textureMaster.initializeTextures()
 				]);
 

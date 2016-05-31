@@ -1,4 +1,4 @@
-/*global define, requirejs */
+/*global define, requirejs, createjs */
 // define(function (require, exports, module) {
 define(function (require) {
 
@@ -13,13 +13,17 @@ define(function (require) {
 			libLoad: 'lib/lib-load',
 				// external libs
 				// Deferred: 'lib/external/deferred',
+				es5Sham: 'lib/external/es5-sham',
+				es5Shim: 'lib/external/es5-shim',
+
 				FPSMeter: 'lib/external/fpsmeter',
 				PIXI: 'lib/external/pixi',
 				TweenMax: 'lib/external/TweenMax',
 				promise: 'lib/external/promise',
+				sound: 'lib/external/sound',
 				// internal libs
 				EndlessArray: 'lib/internal/endless-array',
-				fontLoader: 'lib/internal/font-loader',
+				// fontLoader: 'lib/internal/font-loader',
 				util: 'lib/internal/util',
 				Counter: 'lib/internal/Counter',
 
@@ -35,6 +39,8 @@ define(function (require) {
 				loader: 'core/loader',
 				textureMaster: 'core/texture-master',
 				textureSources: 'core/texture-sources',
+				soundMaster: 'core/sound-master',
+				soundSources: 'core/sound-sources',
 
 				// rendering
 				renderer: 'core/renderer',
@@ -132,9 +138,49 @@ define(function (require) {
 			loader
 				.load()
 				.then(function () {
+
+					//createjs.Sound.play("test-sound");
+
 					renderer.initialize();
 					new TownView();
 				});
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+			createjs.Sound.on("fileload", loadHandler);
+			createjs.Sound.registerSound("sound/Humm.mp3", "sound");
+			function loadHandler(event) {
+				console.log('load');
+
+				// This is fired for each sound that is registered.
+				var instance = createjs.Sound.play("sound");  // play using id.  Could also use full sourcepath or event.src.
+				instance.on("complete", function () {
+					console.log('asdsa');
+				});
+				instance.volume = 0.5;
+			}
+
+*/
+
+
+
+
+
+
+
+
+
 
 /*
 			// gameObjectHelper.initialize();

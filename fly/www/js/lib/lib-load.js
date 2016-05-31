@@ -3,13 +3,16 @@ define(
 	[
 		// external libs
 		// 'Deferred',
+		'es5Sham',
+		'es5Shim',
 		'FPSMeter',
 		'PIXI',
 		'TweenMax',
 		'promise',
+		'sound',
 		// internal libs
 		'EndlessArray',
-		'fontLoader',
+		// 'fontLoader',
 		'util',
 		'Counter'
 	],
