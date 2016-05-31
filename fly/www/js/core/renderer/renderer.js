@@ -62,13 +62,17 @@ define(['device', 'mediator', 'deviceKeys', 'FPSMeter', 'rendererKeys'],
 
 			detectResolution: function () {
 
+				// todo: add more logic to detect needed resolution
+
 				var renderer = this,
 					pixelRatio = renderer.detectPixelRatio(),
 					isWebGLSupport = renderer.detectWebGlSupport();
 
 				renderer.resolution = pixelRatio >= 2 && isWebGLSupport ? 2 : 1;
 
-				return renderer.resolution;
+				// return renderer.resolution;
+
+				return 1;
 
 			},
 
@@ -100,8 +104,8 @@ define(['device', 'mediator', 'deviceKeys', 'FPSMeter', 'rendererKeys'],
 
 					deviceData = device.attr,
 
-					pixiRenderer = PIXI.autoDetectRenderer(
-					// pixiRenderer = new PIXI.CanvasRenderer(
+					// pixiRenderer = PIXI.autoDetectRenderer(
+					pixiRenderer = new PIXI.CanvasRenderer(
 						deviceData.width,
 						deviceData.height,
 						{
