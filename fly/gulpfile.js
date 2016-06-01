@@ -82,8 +82,6 @@ gulp.task('collect-js', function () {
 				loader: 'core/loader',
 				textureMaster: 'core/texture/texture-master',
 				textureSources: 'core/texture/texture-sources',
-				soundMaster: 'core/sound/sound-master',
-				soundSources: 'core/sound/sound-sources',
 
 				// rendering
 				renderer: 'core/renderer/renderer',

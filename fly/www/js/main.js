@@ -33,8 +33,6 @@ requirejs.config({
 		loader: 'core/loader',
 		textureMaster: 'core/texture/texture-master',
 		textureSources: 'core/texture/texture-sources',
-		soundMaster: 'core/sound/sound-master',
-		soundSources: 'core/sound/sound-sources',
 
 		// rendering
 		renderer: 'core/renderer/renderer',
@@ -72,8 +70,6 @@ define(['libLoad', 'loader', 'device', 'renderer', 'TownView', 'util'],
 		loader
 			.load()
 			.then(function () {
-
-				createjs.Sound.play("test-sound");
 
 				renderer.initialize();
 				new TownView();
