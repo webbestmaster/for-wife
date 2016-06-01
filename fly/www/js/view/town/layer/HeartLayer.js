@@ -23,7 +23,7 @@ define(['Layer', 'util', 'DisplayObject', 'device', 'heartLayerKeys', 'flyLayerK
 			' 0000000 ',
 			'  00000  ',
 			'   000   ',
-			'    0   0'
+			'    0    '
 		],
 
 		initialize: function () {

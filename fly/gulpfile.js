@@ -5,7 +5,7 @@ var gulp = require('gulp'),
 	minifyCss = require('gulp-minify-css'),
 	rjs = require('gulp-requirejs'),
 	uglify = require('gulp-uglify'),
-	re = require('./my_node_modules/reg-exp-code-cleaner');
+	findReplace = require('./my_node_modules/find-replace');
 
 gulp.task('default', function () {
 	return gulp.start('copy-assets', 'html', 'css', 'js');
@@ -35,7 +35,7 @@ gulp.task('css', function () {
 
 // JS
 gulp.task('js', function () {
-	return gulp.start('collect-js', 'uglify-js');
+	return gulp.start('collect-js', 'find-replace', 'uglify-js');
 });
 
 gulp.task('js-watch', function () {
@@ -111,7 +111,23 @@ gulp.task('collect-js', function () {
 
 });
 
-gulp.task('uglify-js', ['collect-js'], function () {
+// and remove all marked as remove
+gulp.task('find-replace', ['collect-js'], function () {
+	return gulp.src('./dist/www/js/main.js')
+
+		// remove all -> [some code] // remove
+		.pipe(findReplace({
+			list: [
+				{
+					find: /\n[^\n]*?\/\/\s?remove(?=\n)/g,
+					replace: ''
+				}
+			]
+		}))
+		.pipe(gulp.dest('./dist/www/js'));
+});
+
+gulp.task('uglify-js', ['find-replace'], function () {
 	return gulp.src('./dist/www/js/main.js')
 		.pipe(uglify())
 		.pipe(gulp.dest('./dist/www/js/'));
@@ -158,18 +174,6 @@ gulp.task('copy-assets', function () {
 
 
 
-gulp.task('test-re', function () {
-	return gulp.src('./www/js/main.js')
-		.pipe(re({
-			re: [
-				{
-					re: /e/gi,
-					replace: '!!!!!!'
-				}
-			]
-		}))
-		.pipe(gulp.dest('./dist/www/js'));
-});
 
 
 
