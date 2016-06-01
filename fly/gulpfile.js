@@ -1,11 +1,11 @@
-"use strict";
-
+/*global require */
 var gulp = require('gulp'),
 // clean = require('gulp-rimraf'),
 	minifyHTML = require('gulp-minify-html'),
 	minifyCss = require('gulp-minify-css'),
 	rjs = require('gulp-requirejs'),
-	uglify = require('gulp-uglify');
+	uglify = require('gulp-uglify'),
+	re = require('./my_node_modules/reg-exp-code-cleaner');
 
 gulp.task('default', function () {
 	return gulp.start('copy-assets', 'html', 'css', 'js');
@@ -138,3 +138,42 @@ gulp.task('copy-assets', function () {
 	});
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+gulp.task('test-re', function () {
+	return gulp.src('./www/js/main.js')
+		.pipe(re({
+			re: [
+				{
+					re: /e/gi,
+					replace: '!!!!!!'
+				}
+			]
+		}))
+		.pipe(gulp.dest('./dist/www/js'));
+});
+
+
+
+
+
+
+
