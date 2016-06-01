@@ -50,7 +50,7 @@ define(['Layer', 'util', 'device', 'DisplayObject', 'displayObjectKeys', 'Counte
 		addSpriteBg: function () {
 
 			var layer = this,
-				sprite = new win.PIXI.Sprite.fromFrame('bg-red');
+				sprite = new win.PIXI.Sprite.fromFrame('town-bg.png');
 
 			layer.set('do-bg', new DisplayObject(sprite));
 			layer.addSprite(sprite);
@@ -60,7 +60,7 @@ define(['Layer', 'util', 'device', 'DisplayObject', 'displayObjectKeys', 'Counte
 		addSpriteTown: function () {
 
 			var layer = this,
-				sprite = new win.PIXI.Sprite.fromFrame('town');
+				sprite = new win.PIXI.Sprite.fromFrame('town.png');
 
 			layer.set('do-town', new DisplayObject(sprite));
 			layer.addSprite(sprite);

@@ -1,15 +1,15 @@
 {
-  "frames": {
-    "town": {
-      "frame": {"x":0, "y":0, "w":1000, "h":464},
-      "spriteSourceSize": {"x":0,"y":0,"w":1000,"h":464},
-      "sourceSize": {"w":1000,"h":464}
-    }
+"frames": {
+	"town.png": {
+		"frame": {"x":0, "y":0, "w":1000, "h":464},
+		"spriteSourceSize": {"x":0,"y":0,"w":1000,"h":464},
+		"sourceSize": {"w":1000,"h":464}
+	}
 
-  },
-  "meta": {
-    "image": "town.png",
-    "size": {"w": 1001, "h": 465},
-    "scale": "1"
-  }
+},
+"meta": {
+	"image": "town.png",
+	"size": {"w": 1002, "h": 466},
+	"scale": "1"
+}
 }
