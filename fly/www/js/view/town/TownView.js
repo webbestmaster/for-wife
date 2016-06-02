@@ -41,11 +41,15 @@ define(['util', 'View', 'townViewKeys', 'rendererKeys', 'TownLayer', 'HeartLayer
 
 			view.publish(rendererKeys.APPEND, heartLayer.get('stage'));
 			view.set(townViewKeys.LAYER.HEART, heartLayer);
+			heartLayer.hide();
 
 			view.publish(rendererKeys.APPEND, flyLayer.get('stage'));
 			view.set(townViewKeys.LAYER.FLY, flyLayer);
 
-			view.publish(heartLayerKeys.SHOW.HEART);
+			setTimeout(function () {
+				heartLayer.show();
+				view.publish(heartLayerKeys.SHOW.HEART);
+			}, 1.5e3);
 
 		}
 
