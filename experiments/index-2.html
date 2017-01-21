@@ -2,13 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>MorphSVG - sequence</title>
-
-
-    <!--<link rel='stylesheet prefetch' href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css'>-->
-
-    <!--<link rel="stylesheet" href="css/style.css">-->
-
+    <title>For Best Wife</title>
 
     <style>
         body {
@@ -16,8 +10,10 @@
         }
         svg {
             display: block;
-            max-width: 100%;
-            max-height: 100%;
+            /*max-width: auto;*/
+            /*max-height: auto;*/
+            width: 100%;
+            height: 100%;
         }
     </style>
 
@@ -259,46 +255,37 @@
 	l0.971-2.125c5.484-12.007,22.995-11.827,29.089,0.299c1.933,3.847,2.146,12.06,0.431,16.687
 	c-2.235,6.035-6.436,10.636-16.145,17.687c-6.366,4.624-13.573,11.62-14.074,12.603C49.286,78.745,49.84,77.783,47.269,74.901z"/>
 
-
-
 </div>
 
 <script src="uncompressed/TweenMax.js"></script>
 <script src='MorphSVGPlugin.min.js'></script>
 <script src='findShapeIndex.js'></script>
 <script src='ScrambleTextPlugin.min.js'></script>
+
 <script>
 
+    var tl;
     var timeBetweenMorph = 0.2;
     var timeForMorphing = 2;
+    var nodePatternt1 = document.getElementById("hugs-1");
+    var emptyPattern = document.getElementById("empty-pattern");
 
-    var tl = new TimelineLite(),
-        nodePatternt1 = document.getElementById("hugs-1"),
-        emptyPattern = document.getElementById("empty-pattern");
+    tl = new TimelineLite();
 
     tl.to(nodePatternt1, timeForMorphing, {delay: timeBetweenMorph, morphSVG: "#hugs-2"})
         .to(nodePatternt1, timeForMorphing, {delay: timeBetweenMorph, morphSVG: "#hugs-3"})
-        .addLabel('blinkMiddle')
-        .to(emptyPattern, timeForMorphing, {delay: timeBetweenMorph, morphSVG: "#red-heart"}, 'blinkMiddle')
-        .to(nodePatternt1, timeForMorphing, {delay: timeBetweenMorph, morphSVG: "#pink-heart"}, 'blinkMiddle')
-        .addLabel('blinkMiddle2')
-        .to(emptyPattern, timeForMorphing, {delay: timeBetweenMorph, morphSVG: "#heart-end"}, 'blinkMiddle2')
-        .to(nodePatternt1, timeForMorphing, {delay: timeBetweenMorph, morphSVG: "#heart-end"}, 'blinkMiddle2');
+        .addLabel('dbl-heart-start')
+        .to(emptyPattern, timeForMorphing, {delay: timeBetweenMorph, fill: "#CC0000", morphSVG: "#red-heart"}, 'dbl-heart-start')
+        .to(nodePatternt1, timeForMorphing, {delay: timeBetweenMorph, fill: "#FFC0C0", morphSVG: "#pink-heart"}, 'dbl-heart-start')
+        .addLabel('single-big-heart-start')
+        .to(emptyPattern, timeForMorphing, {delay: timeBetweenMorph, fill: "#CC0000", morphSVG: "#heart-end"}, 'single-big-heart-start')
+        .to(nodePatternt1, timeForMorphing, {delay: timeBetweenMorph, fill: "#FF0000", morphSVG: "#heart-end"}, 'single-big-heart-start');
 
+    tl = new TimelineMax();
 
-
-
-
-    var tl = new TimelineMax();
-
-    tl.to("#text", 3, {scrambleText:{text:"ScrambleText allows", chars:"lowerCase", revealDelay:0.5, tweenLength:false, ease:Linear.easeNone}})
+    tl.to("#text", 3, {scrambleText:{text:"ScrambleText allows", chars:"lowerCase", revealDelay:0.5, tweenLength:false, ease:Linear.easeNone}});
     TweenLite.to('#text', 2, {text:"This is the new text", ease:Linear.easeNone});
 
-    /*
-            .to(circle, 1, {morphSVG: "#star"}, "+=1")
-            .to(circle, 1, {morphSVG: "#elephant"}, "+=1")
-            .to(circle, 1, {morphSVG: circle}, "+=1");
-    */
 </script>
 
 </body>
