@@ -1,4 +1,3 @@
-const MainModel = require('./lib/main-model');
-const PIXI = require('pixi.js');
-
-import Screen from './model/screen';
+require('./lib/main-model');
+require('pixi.js');
+require('gsap');

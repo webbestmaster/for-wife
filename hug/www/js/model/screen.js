@@ -26,7 +26,7 @@ export default class Screen extends MainModel {
     }
 }
 
-function getSize() {
+export function getSize() {
     const docElem = document.documentElement;
 
     return {

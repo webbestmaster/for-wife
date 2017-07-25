@@ -1,6 +1,8 @@
 const MainModel = require('./../lib/main-model');
 const PIXI = require('pixi.js');
 
+import Heart from './heart';
+
 export default class Bear extends MainModel {
     constructor() {
         super();
@@ -14,6 +16,7 @@ export default class Bear extends MainModel {
         const model = this;
 
         model.initSprite();
+        model.initHearts();
         model.bindEventListeners();
     }
 
@@ -46,6 +49,32 @@ export default class Bear extends MainModel {
 
         sprite.on('pointerdown', () => {
             sprite.gotoAndPlay(0);
+            model.showHearts();
         });
+    }
+
+    initHearts() {
+        const model = this;
+        const sprite = model.get('sprite');
+        const hearts = [];
+        const heartsNumber = 32; // my wife is 32
+
+        for (let ii = 0; ii < heartsNumber; ii += 1) {
+            const heart = new Heart();
+            const heartSprite = heart.get('sprite');
+
+            heartSprite.renderable = false;
+            sprite.addChild(heartSprite);
+            hearts.push(heart);
+        }
+
+        model.set({hearts});
+    }
+
+    showHearts() {
+        const model = this;
+        const hearts = model.get('hearts');
+
+        hearts.forEach(heart => heart.animate());
     }
 }
