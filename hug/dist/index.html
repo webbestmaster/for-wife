@@ -6,14 +6,40 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Hugs</title>
+    <style>
+        html, body, canvas {
+            margin: 0;
+            padding: 0;
+            display: block;
+        }
+
+        .happy-birthday {
+            color: #333;
+            position: fixed;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            text-align: center;
+            font-family: Arial, serif;
+            font-weight: normal;
+            font-size: 32px;
+            line-height: 80px;
+            bottom: 0;
+
+            -webkit-transform: translate(0, 100%);
+            transform: translate(0, 100%);
+
+            -webkit-transition: all 2s ease-out;
+            transition: all 2s ease-out;
+        }
+
+        .happy-birthday--up {
+            -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+        }
+    </style>
 </head>
 <body>
-<style>
-    html, body, canvas {
-        margin: 0;
-        padding: 0;
-        display: block;
-    }
-</style>
+<h1 class="happy-birthday js-happy-birthday">Happy Birthday!</h1>
 <script type="text/javascript" src="common.js"></script><script type="text/javascript" src="main.js"></script></body>
 </html>

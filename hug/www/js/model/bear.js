@@ -50,6 +50,11 @@ export default class Bear extends MainModel {
         sprite.on('pointerdown', () => {
             sprite.gotoAndPlay(0);
             model.showHearts();
+
+            // up title
+            const node = document.querySelector('.js-happy-birthday');
+
+            node.className += ' happy-birthday--up';
         });
     }
 
